@@ -1,0 +1,106 @@
+name: Update PWA to v1.10 private courses
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/v110-private-courses.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  update-v110:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch v1.10 private-course behavior
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          # ---- course-builder.html ----
+          p=Path('course-builder.html')
+          s=p.read_text(encoding='utf-8')
+          s=s.replace('教材作成アシスタント v1.9','教材作成アシスタント v1.10')
+          s=s.replace('<span class="pill">v1.9</span>','<span class="pill">v1.10</span>')
+          s=s.replace('フォーム入力やCSV一括読込に加え、分類情報と作成者・版・更新日・タグ・想定学習時間を設定できます。入力内容はブラウザ内だけで処理し、サーバーへ送信しません。','作成した教材は原則としてこの端末だけに保存します。共有したい場合だけ、共有用JSONを書き出してGitHubへ登録します。入力内容はブラウザ内だけで処理します。')
+          s=s.replace('.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}', '.actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}')
+          old='<section class="card"><h2>4. 確認・JSON出力</h2><div class="actions"><button type="button" class="secondary" id="validateBtn">内容をチェック</button><button type="button" class="secondary" id="previewBtn">JSONをプレビュー</button><button type="button" class="primary" id="downloadBtn">教材JSONを保存</button></div><div id="message" class="notice hidden"></div><pre id="preview" class="preview hidden"></pre><div class="small" style="margin-top:12px">保存したJSONをGitHubの <code>courses/</code> フォルダへ追加すると、GitHub Actionsが検証し、正常なら <code>catalog.json</code> へ自動登録します。</div></section>'
+          new='<section class="card"><h2>4. 保存・共有</h2><div class="notice"><strong>標準は「自分の教材として保存」</strong><br><span class="small">この端末のブラウザ内だけに保存され、他の利用者には公開されません。</span></div><div class="actions"><button type="button" class="secondary" id="validateBtn">内容をチェック</button><button type="button" class="secondary" id="previewBtn">JSONをプレビュー</button><button type="button" class="primary" id="saveLocalBtn">自分の教材として保存</button><button type="button" class="secondary" id="downloadBtn">共有用JSONを書き出す</button></div><div id="message" class="notice hidden"></div><pre id="preview" class="preview hidden"></pre><div class="small" style="margin-top:12px"><strong>共有するときだけ：</strong>「共有用JSONを書き出す」で保存したJSONをGitHubの <code>courses/</code> へ追加します。GitHubへ追加した教材は他の利用者の「教材を追加」に表示されます。</div></section>'
+          if old not in s:
+              raise SystemExit('builder action block target not found')
+          s=s.replace(old,new,1)
+          # Add a second script that reuses the existing synchronous Preview action as validated JSON source.
+          insert='''<script>\n(function(){\n  var PRIVATE_KEY='private_courses_v1', SUBSCRIBED_KEY='subscribed_courses_v1';\n  function readObject(key){try{var x=JSON.parse(localStorage.getItem(key));return x&&typeof x==='object'&&!Array.isArray(x)?x:{}}catch(e){return {}}}\n  function readArray(key){try{var x=JSON.parse(localStorage.getItem(key));return Array.isArray(x)?x.map(String):[]}catch(e){return []}}\n  var btn=document.getElementById('saveLocalBtn');\n  if(!btn)return;\n  btn.addEventListener('click',async function(){\n    var preview=document.getElementById('preview');\n    preview.textContent='';\n    document.getElementById('previewBtn').click();\n    var text=preview.textContent.trim();\n    if(!text)return;\n    var data;try{data=JSON.parse(text)}catch(e){alert('教材データを読み取れませんでした。');return}\n    try{\n      var r=await fetch('./catalog.json',{cache:'no-store'});\n      if(r.ok){var cat=await r.json();if(cat&&Array.isArray(cat.courses)&&cat.courses.some(function(c){return String(c.id)===String(data.course_id)})){alert('この教材IDは共有教材ですでに使われています。\\n個人教材には別の教材IDを指定してください。');return}}\n    }catch(e){}\n    var all=readObject(PRIVATE_KEY);all[String(data.course_id)]=data;\n    try{localStorage.setItem(PRIVATE_KEY,JSON.stringify(all))}catch(e){alert('この端末に教材を保存できませんでした。保存容量をご確認ください。');return}\n    var subs=readArray(SUBSCRIBED_KEY);if(subs.indexOf(String(data.course_id))<0)subs.push(String(data.course_id));\n    localStorage.setItem(SUBSCRIBED_KEY,JSON.stringify(subs));\n    alert('「'+(data.title||data.course_id)+'」を自分の教材として保存しました。\\nGitHubには送信されていないため、他の利用者には見えません。');\n    location.href='./';\n  });\n})();\n</script>'''
+          if '</body>' not in s:
+              raise SystemExit('builder body end not found')
+          s=s.replace('</body>',insert+'</body>',1)
+          p.write_text(s,encoding='utf-8')
+
+          # ---- index.html ----
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          s=s.replace('PWA版 v1.9・教材メタデータ・カテゴリ・検索・教材作成・自動登録・マイ教材・オフライン対応','PWA版 v1.10・個人教材・共有教材・カテゴリ・検索・教材作成・オフライン対応')
+          s=s.replace('配信中の教材から、使いたい教材だけをマイ教材に追加できます。','この端末だけの個人教材と、GitHubで共有されている教材から追加できます。')
+          old="const LEGACY_KEY='python_quiz_progress_v1',MIGRATION_MARK='python_quiz_v1_migrated',HIDDEN_KEY='hidden_courses_v1',SUBSCRIBED_KEY='subscribed_courses_v1',SUBSCRIPTION_MIGRATION_KEY='subscriptions_v14_initialized';"
+          new="const LEGACY_KEY='python_quiz_progress_v1',MIGRATION_MARK='python_quiz_v1_migrated',HIDDEN_KEY='hidden_courses_v1',SUBSCRIBED_KEY='subscribed_courses_v1',SUBSCRIPTION_MIGRATION_KEY='subscriptions_v14_initialized',PRIVATE_COURSES_KEY='private_courses_v1';"
+          if old not in s:
+              raise SystemExit('index constants target not found')
+          s=s.replace(old,new,1)
+          marker='async function loadCatalog(){'
+          helpers='''function loadPrivateCourses(){try{const x=JSON.parse(localStorage.getItem(PRIVATE_COURSES_KEY));return x&&typeof x==='object'&&!Array.isArray(x)?x:{}}catch{return {}}}\nfunction privateCourseEntries(){\nconst entries=[];for(const data of Object.values(loadPrivateCourses())){\nif(!data||!data.course_id||!Array.isArray(data.questions)||!data.questions.length)continue;\nentries.push({id:String(data.course_id),title:data.title||data.course_id,description:data.description||data.subtitle||'',category:data.category||'',difficulty:data.difficulty||'',audience:data.audience||'',author:data.author||'',version:data.version||'',updated_at:data.updated_at||'',study_time:data.study_time||'',tags:Array.isArray(data.tags)?data.tags:[],local:true,file:'data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(data))});\n}\nreturn entries;\n}\nfunction mergePrivateCourses(remote){\nconst out=Array.isArray(remote)?remote.slice():[],ids=new Set(out.map(c=>String(c.id)));\nfor(const c of privateCourseEntries()){if(!ids.has(String(c.id))){out.push(c);ids.add(String(c.id));}}\nreturn out;\n}\n'''
+          if marker not in s:
+              raise SystemExit('index loadCatalog marker not found')
+          s=s.replace(marker,helpers+marker,1)
+          old='CATALOG=data;initializeSubscriptions();renderCatalog();'
+          new='data.courses=mergePrivateCourses(data.courses);CATALOG=data;initializeSubscriptions();renderCatalog();'
+          if old not in s:
+              raise SystemExit('index catalog assignment target not found')
+          s=s.replace(old,new,1)
+          old="const meta=document.createElement('div');meta.className='coursemeta';meta.textContent=`この端末で学習済み ${progressFor(c.id)}問`;"
+          new="const meta=document.createElement('div');meta.className='coursemeta';meta.textContent=(c.local?'個人教材 / ':'共有教材 / ')+`この端末で学習済み ${progressFor(c.id)}問`;"
+          if old not in s:
+              raise SystemExit('index catalog meta target not found')
+          s=s.replace(old,new,1)
+          # In Add Courses metadata, prepend private/shared source label.
+          s=s.replace("const parts=[];if(c.category)","const parts=[];parts.push(c.local?'個人教材':'共有教材');if(c.category)",1)
+          p.write_text(s,encoding='utf-8')
+
+          # ---- service-worker.js ----
+          p=Path('service-worker.js')
+          s=p.read_text(encoding='utf-8')
+          s=re.sub(r"const CACHE_NAME='python-quiz-pwa-v1-[^']+';","const CACHE_NAME='python-quiz-pwa-v1-10';",s,count=1)
+          old="  if(e.request.method!=='GET')return;\n  const u=new URL(e.request.url);"
+          new="  if(e.request.method!=='GET')return;\n  if(e.request.mode==='navigate'){\n    e.respondWith(fetch(e.request).then(r=>{if(r.ok){const copy=r.clone();caches.open(CACHE_NAME).then(c=>c.put(e.request,copy));}return r;}).catch(()=>caches.match(e.request).then(x=>x||caches.match('./index.html'))));\n    return;\n  }\n  const u=new URL(e.request.url);"
+          if old not in s:
+              raise SystemExit('service worker navigation target not found')
+          s=s.replace(old,new,1)
+          p.write_text(s,encoding='utf-8')
+
+          # ---- README ----
+          p=Path('README.md')
+          s=p.read_text(encoding='utf-8')
+          s=re.sub(r'^# Python Quiz PWA v1\.\d+','# Python Quiz PWA v1.10',s,count=1,flags=re.M)
+          note='''\n## v1.10 個人教材と共有教材\n\n教材作成時の標準保存先をブラウザ内のローカル保存に変更しました。通常の「自分の教材として保存」ではGitHubへ送信せず、その端末の利用者だけがマイ教材として利用します。全利用者へ共有したい場合だけ「共有用JSONを書き出す」を使い、管理者が `courses/` へ登録します。\n\n- 個人教材: `localStorage` の `private_courses_v1` に教材本体を保存\n- 保存時に `subscribed_courses_v1` へ追加し、マイ教材へ即時表示\n- 共有教材: 従来どおりGitHub `courses/*.json` → 自動検証 → `catalog.json`\n- 個人教材と共有教材は一覧で表示区分を明示\n- 共有教材と同じ `course_id` の個人教材は保存時に警告\n- ナビゲーションをネットワーク優先に変更し、旧版画面が残り続ける問題を軽減\n\n'''
+          if '## v1.10 個人教材と共有教材' not in s:
+              first=s.find('\n')
+              s=s[:first+1]+note+s[first+1:]
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Sanity checks
+        shell: bash
+        run: |
+          grep -q 'PWA版 v1.10' index.html
+          grep -q '自分の教材として保存' course-builder.html
+          grep -q 'private_courses_v1' index.html
+          grep -q 'private_courses_v1' course-builder.html
+          grep -q "python-quiz-pwa-v1-10" service-worker.js
+      - name: Commit v1.10
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html course-builder.html service-worker.js README.md
+          git commit -m "feat: add v1.10 private local courses [skip ci]"
+          git push
