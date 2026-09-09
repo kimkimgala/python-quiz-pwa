@@ -1,31 +1,27 @@
-# Python基礎集中講座 PWA版 v1.0
+# Python Quiz PWA v1.1
 
-## 機能
-- Androidホーム画面へインストール
-- オフライン利用
-- Day別／全問／シャッフル
-- 間違えた問題だけ再出題
-- 未クリア問題だけ再出題
-- 正解・不正解回数を端末保存
-- 3回正解でクリア
-- Day別学習状況
-- 学習履歴リセット
+Androidタブレット等で利用できる、オフライン対応の学習問題PWAです。
 
-## GitHub Pagesで公開する手順
-1. GitHubで新しいリポジトリを作成。
-2. ZIP内のファイルをリポジトリ直下へアップロード。
-3. GitHubの Settings → Pages。
-4. Sourceを「Deploy from a branch」。
-5. Branchを `main`、Folderを `/ (root)` にしてSave。
-6. 発行されたGitHub Pages URLをAndroid Chromeで開く。
-7. Chromeの「アプリをインストール」または「ホーム画面に追加」を選ぶ。
+## v1.1 のポイント
 
-## 注意
-PWAのService Workerは通常HTTPS配信が必要です。端末内のindex.htmlを直接開く方式では、
-PWAインストールやオフラインキャッシュが正しく動かないことがあります。
+アプリ本体 (`index.html`) と教材データ (`questions.json`) を分離しました。
+**別ジャンルに変更するときは、基本的に `questions.json` だけを差し替えます。**
 
-## 収録問題
-49問。元原稿では問146が欠けているためDay 10のみ4問です。
+`questions.json` の主な項目:
+
+- `course_id`: 教材を識別するID（教材ごとの学習履歴を分けるため、一意にする）
+- `title`: 教材タイトル
+- `subtitle`: サブタイトル
+- `section_label`: 区分名（例: Day、章、分野）
+- `clear_count`: 何回正解でクリアとするか
+- `questions`: 問題一覧
+
+各問題は従来どおり `day`, `number`, `type`, `question`, `options`, `answer`, `explanation` を持ちます。`day` は名称上は互換性維持のため残していますが、画面表示は `section_label` で変更できます。
+
+## オフライン
+
+Service Workerがアプリ本体と教材をキャッシュします。`questions.json` はオンライン時に最新版を取得し、失敗した場合はキャッシュ版を利用します。
 
 ## 学習履歴
-localStorageに保存されます。ブラウザデータを削除すると履歴も消えます。
+
+教材の `course_id` ごとにブラウザの localStorage に保存します。Python v1.0 の既存履歴は `python-basic-v1` へ自動移行します。

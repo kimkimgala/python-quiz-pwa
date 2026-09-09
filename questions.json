@@ -1,0 +1,1235 @@
+{
+  "course_id": "python-basic-v1",
+  "title": "Python基礎集中講座",
+  "subtitle": "模擬問題アプリ",
+  "section_label": "Day",
+  "clear_count": 3,
+  "questions": [
+    {
+      "day": 1,
+      "number": 101,
+      "type": "四者択一",
+      "question": "Pythonの f-string の波括弧 {} 内には変数だけでなく計算式やメソッド呼び出しも記述できます。以下のコードを実行した際に出力される結果はどれか。\n\nmax_tokens = 500\nprint(f\"残りトークン数: {max_tokens - 120} / 大文字: {'system'.upper()}\")",
+      "options": [
+        [
+          "A",
+          "残りトークン数: max_tokens - 120 / 大文字: 'system'.upper()"
+        ],
+        [
+          "B",
+          "残りトークン数: 380 / 大文字: SYSTEM"
+        ],
+        [
+          "C",
+          "構文エラー（SyntaxError）"
+        ],
+        [
+          "D",
+          "残りトークン数: 380 / 大文字: 'system'"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "f-string の {} 内には任意のPython式を記述できます。max_tokens - 120 の演算結果（380）や、文字列メソッド 'system'.upper() の実行結果（SYSTEM）が展開されます。"
+    },
+    {
+      "day": 1,
+      "number": 102,
+      "type": "四者択一",
+      "question": "ユーザーからの入力文字列の前後に含まれる余分な空白文字や改行文字を取り除き、プロンプトのノイズを除去する文字列メソッドはどれか。",
+      "options": [
+        [
+          "A",
+          ".clean()"
+        ],
+        [
+          "B",
+          ".trim()"
+        ],
+        [
+          "C",
+          ".strip()"
+        ],
+        [
+          "D",
+          ".slice()"
+        ]
+      ],
+      "answer": "C",
+      "explanation": "Pythonでは文字列の先頭および末尾の空白文字（スペース、タブ、改行）を除去するために .strip() を使用します（他言語の trim() に相当）。"
+    },
+    {
+      "day": 1,
+      "number": 103,
+      "type": "四者択一",
+      "question": "プロンプト内にプログラミングコードやJSON形式などの「波括弧（{ や }）」そのものを文字として記述したい場合、f-string 内で正しくエスケープする方法はどれか。",
+      "options": [
+        [
+          "A",
+          "\\{ および \\}"
+        ],
+        [
+          "B",
+          "{{ および }}"
+        ],
+        [
+          "C",
+          "<{ および }>"
+        ],
+        [
+          "D",
+          "%{ および %}"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "f-string では、波括弧を二重（{{ や }}）に記述することで、変数展開の記号ではなくプレーンな波括弧文字として出力できます。"
+    },
+    {
+      "day": 1,
+      "number": 104,
+      "type": "四者択一",
+      "question": "以下のコードを実行した際、コンソールに出力される文字列はどれか。\n\ndoc_list = [\"就業規則.pdf\", \"情報セキュリティ規程.pdf\", \"旅費規程.pdf\"]\nresult = \"\\n- \".join(doc_list)\nprint(f\"参照ファイル:\\n- {result}\")",
+      "options": [
+        [
+          "A",
+          "参照ファイル: 就業規則.pdf, 情報セキュリティ規程.pdf, 旅費規程.pdf"
+        ],
+        [
+          "B",
+          "参照ファイル:\\n- 就業規則.pdf\\n- 情報セキュリティ規程.pdf\\n- 旅費規程.pdf（改行されて箇条書き表示）"
+        ],
+        [
+          "C",
+          "リスト全体が四角括弧付きで表示される"
+        ],
+        [
+          "D",
+          "join の引数エラー"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "区切り文字.join(リスト) を使用すると、リストの各要素を指定した区切り文字で連結できます。ここでは改行とハイフンで連結し、見やすい箇条書きプロンプトを構築しています。"
+    },
+    {
+      "day": 1,
+      "number": 105,
+      "type": "正誤判定",
+      "question": "Pythonでは三重引用符（\"\"\" または '''）を使用することで、改行をそのまま保持した複数行（マルチライン）の文字列を定義できる。",
+      "options": [
+        [
+          "A",
+          "正しい"
+        ],
+        [
+          "B",
+          "誤り"
+        ]
+      ],
+      "answer": "A",
+      "explanation": "三重引用符を用いると、途中に改行を含んだ長大なシステムプロンプトや説明文をそのまま変数に格納できます。"
+    },
+    {
+      "day": 2,
+      "number": 106,
+      "type": "四者択一",
+      "question": "辞書 config からキー \"temperature\" の値を取得する際、キーが存在しない場合にプログラムをクラッシュ（KeyError）させず、既定値 0.0 を安全に取得する記述はどれか。\n\nconfig = {\"model\": \"gpt-4o\"}",
+      "options": [
+        [
+          "A",
+          "config[\"temperature\"]"
+        ],
+        [
+          "B",
+          "config.get(\"temperature\", 0.0)"
+        ],
+        [
+          "C",
+          "config.find(\"temperature\", 0.0)"
+        ],
+        [
+          "D",
+          "config.default(\"temperature\", 0.0)"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "辞書の .get(key, default) メソッドは、指定したキーが存在しない場合に第2引数で指定したデフォルト値を返却します。ブラケット記法では未存在時に KeyError が発生します。"
+    },
+    {
+      "day": 2,
+      "number": 107,
+      "type": "四者択一",
+      "question": "以下の会話履歴リストから、「AIの最新の回答テキスト（\"前日17時までです。\"）」を取り出すコードとして適切なものはどれか。\n\nmessages = [\n    {\"role\": \"user\", \"content\": \"有給申請はいつまで？\"},\n    {\"role\": \"assistant\", \"content\": \"前日17時までです。\"}\n]",
+      "options": [
+        [
+          "A",
+          "messages[1][\"content\"]"
+        ],
+        [
+          "B",
+          "messages[-1][\"content\"]"
+        ],
+        [
+          "C",
+          "AとBのどちらでも正しい"
+        ],
+        [
+          "D",
+          "messages[\"assistant\"][\"content\"]"
+        ]
+      ],
+      "answer": "C",
+      "explanation": "リストの2番目の要素（インデックス 1）または末尾の要素（インデックス -1）を指定し、得られた辞書からキー \"content\" を取得します。AとBはいずれも同じ結果を返します。"
+    },
+    {
+      "day": 2,
+      "number": 108,
+      "type": "四者択一",
+      "question": "既存のリスト chat_history の末尾に新しいメッセージ辞書を追加するメソッドはどれか。",
+      "options": [
+        [
+          "A",
+          "chat_history.push({\"role\": \"user\", \"content\": \"こんにちは\"})"
+        ],
+        [
+          "B",
+          "chat_history.append({\"role\": \"user\", \"content\": \"こんにちは\"})"
+        ],
+        [
+          "C",
+          "chat_history.insert({\"role\": \"user\", \"content\": \"こんにちは\"})"
+        ],
+        [
+          "D",
+          "chat_history.add({\"role\": \"user\", \"content\": \"こんにちは\"})"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "Pythonのリストの末尾に単一の要素を追加するメソッドは .append() です。"
+    },
+    {
+      "day": 2,
+      "number": 109,
+      "type": "四者択一",
+      "question": "以下のコードを実行した際に出力される値はどれか。\n\nuser_profile = {\"name\": \"山田\", \"role\": \"operator\"}\nuser_profile[\"role\"] = \"supervisor\"\nuser_profile[\"dept\"] = \"CS部\"\nprint(len(user_profile))",
+      "options": [
+        [
+          "A",
+          "2"
+        ],
+        [
+          "B",
+          "3"
+        ],
+        [
+          "C",
+          "4"
+        ],
+        [
+          "D",
+          "1"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "既存のキー \"role\" は値が上書き更新され、存在しないキー \"dept\" は新規追加されます。結果としてキーは3個となり、len() は 3 を返します。"
+    },
+    {
+      "day": 2,
+      "number": 110,
+      "type": "正誤判定",
+      "question": "Pythonのリストでは、要素として文字列、数値、真偽値、辞書、さらには別のリストを混在して格納することができる。",
+      "options": [
+        [
+          "A",
+          "正しい"
+        ],
+        [
+          "B",
+          "誤り"
+        ]
+      ],
+      "answer": "A",
+      "explanation": "Pythonのリストは動的配列であり、異なるデータ型を同一リスト内に自由に共存させることができます。"
+    },
+    {
+      "day": 3,
+      "number": 111,
+      "type": "四者択一",
+      "question": "以下のコードを実行した際に出力される行数は何行か。\n\nlogs = [\"OK\", \"WARN\", \"SKIP\", \"ERROR\", \"SKIP\", \"INFO\"]\nfor log in logs:\n    if log == \"SKIP\":\n        continue\n    print(log)",
+      "options": [
+        [
+          "A",
+          "6行"
+        ],
+        [
+          "B",
+          "4行"
+        ],
+        [
+          "C",
+          "2行"
+        ],
+        [
+          "D",
+          "0行"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "continue 文は、それ以降の処理をスキップして次のループイテレーションへ進みます。\"SKIP\" の2回がスキップされるため、残りの4要素が出力されます。"
+    },
+    {
+      "day": 3,
+      "number": 112,
+      "type": "四者択一",
+      "question": "検索処理などで「対象が見つかった瞬間にループを完全に打ち切りたい」場合に使用するキーワードはどれか。",
+      "options": [
+        [
+          "A",
+          "stop"
+        ],
+        [
+          "B",
+          "exit"
+        ],
+        [
+          "C",
+          "break"
+        ],
+        [
+          "D",
+          "pass"
+        ]
+      ],
+      "answer": "C",
+      "explanation": "break 文は、現在実行中のループを即座に強制終了し、ループの外側の処理へ抜けます。"
+    },
+    {
+      "day": 3,
+      "number": 113,
+      "type": "四者択一",
+      "question": "文字列やリスト内に特定の要素が含まれているかを真偽値（True/False）で判定する演算子はどれか。\n\nif \"解約\" ??? customer_message:\n    print(\"解約窓口へ誘導します\")",
+      "options": [
+        [
+          "A",
+          "has"
+        ],
+        [
+          "B",
+          "contains"
+        ],
+        [
+          "C",
+          "in"
+        ],
+        [
+          "D",
+          "exists"
+        ]
+      ],
+      "answer": "C",
+      "explanation": "Pythonでは 要素 in コレクション 演算子を用いて包含判定を行います。"
+    },
+    {
+      "day": 3,
+      "number": 114,
+      "type": "四者択一",
+      "question": "ループ処理において、要素そのものと同時に「0から始まるインデックス番号（カウンター）」を同時に取得できる標準関数はどれか。\n\ndocs = [\"規程A\", \"規程B\", \"規程C\"]\nfor i, doc in ???(docs):\n    print(f\"[{i}] {doc}\")",
+      "options": [
+        [
+          "A",
+          "enumerate"
+        ],
+        [
+          "B",
+          "counter"
+        ],
+        [
+          "C",
+          "indexed"
+        ],
+        [
+          "D",
+          "range"
+        ]
+      ],
+      "answer": "A",
+      "explanation": "enumerate(iterable, start=0) を使用すると、(インデックス, 要素) のタプルが順次生成されます。"
+    },
+    {
+      "day": 3,
+      "number": 115,
+      "type": "四者択一",
+      "question": "辞書 data のすべての「キー」と「値」のペアを同時に取り出してループ処理するメソッドはどれか。\n\ndata = {\"model\": \"gpt-4o\", \"temperature\": 0.2}\nfor k, v in data.???():\n    print(f\"{k} = {v}\")",
+      "options": [
+        [
+          "A",
+          "pairs()"
+        ],
+        [
+          "B",
+          "items()"
+        ],
+        [
+          "C",
+          "elements()"
+        ],
+        [
+          "D",
+          "all()"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "辞書の .items() メソッドは、(キー, 値) のペアを反復可能なオブジェクトとして返します。"
+    },
+    {
+      "day": 4,
+      "number": 116,
+      "type": "四者択一",
+      "question": "以下の関数 get_greeting において、return 文を記述しなかった場合、関数の戻り値として自動的に設定されるオブジェクトはどれか。\n\ndef get_greeting(name):\n    message = f\"こんにちは、{name}さん\"",
+      "options": [
+        [
+          "A",
+          "空文字列 \"\""
+        ],
+        [
+          "B",
+          "0"
+        ],
+        [
+          "C",
+          "None"
+        ],
+        [
+          "D",
+          "エラー（ReturnRequiredError）"
+        ]
+      ],
+      "answer": "C",
+      "explanation": "Pythonの関数は return 文を実行せずに終了した場合、または単に return とだけ記述した場合、戻り値として None を返します。"
+    },
+    {
+      "day": 4,
+      "number": 117,
+      "type": "四者択一",
+      "question": "関数の呼び出しにおいて、引数名を明示して値を渡す「キーワード引数」の利用例として正しいものはどれか。\n\ndef generate_response(prompt, model=\"gpt-4o\", temperature=0.0):\n    pass",
+      "options": [
+        [
+          "A",
+          "generate_response(\"要約して\", model=\"gpt-4o-mini\", temperature=0.5)"
+        ],
+        [
+          "B",
+          "generate_response(model=\"gpt-4o\", \"要約して\")"
+        ],
+        [
+          "C",
+          "generate_response(\"要約して\", \"gpt-4o-mini\", temp=0.5)"
+        ],
+        [
+          "D",
+          "generate_response(prompt: \"要約して\")"
+        ]
+      ],
+      "answer": "A",
+      "explanation": "位置引数の後にキーワード引数を指定します。引数名は定義と一致させる必要があります。"
+    },
+    {
+      "day": 4,
+      "number": 118,
+      "type": "四者択一",
+      "question": "関数の設計において、任意の個数のキーワード引数を辞書としてまとめて受け取るための特殊引数はどれか。",
+      "options": [
+        [
+          "A",
+          "*args"
+        ],
+        [
+          "B",
+          "**kwargs"
+        ],
+        [
+          "C",
+          "&params"
+        ],
+        [
+          "D",
+          "*dict"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "アスタリスク2つを付けた **kwargs（Keyword Arguments）を定義すると、呼び出し時に渡された任意のキーワード引数が1つの辞書に格納されます。"
+    },
+    {
+      "day": 4,
+      "number": 119,
+      "type": "四者択一",
+      "question": "Python初心者が陥りやすいアンチパターンとして知られる「デフォルト引数にミュータブル（変更可能）なオブジェクトを指定した問題」を示すコードはどれか。",
+      "options": [
+        [
+          "A",
+          "def add_item(item, history=None):"
+        ],
+        [
+          "B",
+          "def add_item(item, history=[]):"
+        ],
+        [
+          "C",
+          "def add_item(item: str, count: int = 0):"
+        ],
+        [
+          "D",
+          "def add_item(item: str, is_admin: bool = False):"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "デフォルト引数のリスト（history=[]）は関数定義時に1度だけ生成され共有されるため、複数回の呼び出し間で中身が累積してしまうバグを引き起こします。既定値には None を指定し、関数内で初期化するのが定石です。"
+    },
+    {
+      "day": 4,
+      "number": 120,
+      "type": "正誤判定",
+      "question": "関数の直下に記述する説明用文字列（Docstring）は三重引用符（\"\"\")で囲み、その関数の役割、引数、戻り値の説明を記載するのが推奨慣行である。",
+      "options": [
+        [
+          "A",
+          "正しい"
+        ],
+        [
+          "B",
+          "誤り"
+        ]
+      ],
+      "answer": "A",
+      "explanation": "関数定義の先頭行に記述されたDocstringは、開発環境（VS Code等）のホバー表示や help() 関数で参照されます。"
+    },
+    {
+      "day": 5,
+      "number": 121,
+      "type": "四者択一",
+      "question": "ファイル操作において、処理終了後や例外発生時にも確実にファイルを自動クローズするために使用する構文はどれか。",
+      "options": [
+        [
+          "A",
+          "try - catch 構文"
+        ],
+        [
+          "B",
+          "with open(...) 構文"
+        ],
+        [
+          "C",
+          "file.auto_close() 構文"
+        ],
+        [
+          "D",
+          "open - defer 構文"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "with open(...) as f: というコンテキストマネージャ構文を用いることで、ブロックを抜けた際に自動的にファイルが閉じられ、リソースリークを防ぎます。"
+    },
+    {
+      "day": 5,
+      "number": 122,
+      "type": "四者択一",
+      "question": "既存のテキストファイルの末尾に新しい対話ログを「追記（追記モード）」で書き込む際のオープンモードはどれか。",
+      "options": [
+        [
+          "A",
+          "\"r\""
+        ],
+        [
+          "B",
+          "\"w\""
+        ],
+        [
+          "C",
+          "\"a\""
+        ],
+        [
+          "D",
+          "\"x\""
+        ]
+      ],
+      "answer": "C",
+      "explanation": "\"r\" は読み取り、\"w\" は新規上書き、\"a\"（append）は末尾追記モードです。"
+    },
+    {
+      "day": 5,
+      "number": 123,
+      "type": "四者択一",
+      "question": "Windows環境でテキストファイルを読み書きする際、日本語の文字化け（UnicodeDecodeError等）を防止するために open 関数に必ず明示すべき引数はどれか。",
+      "options": [
+        [
+          "A",
+          "charset=\"shift-jis\""
+        ],
+        [
+          "B",
+          "encoding=\"utf-8\""
+        ],
+        [
+          "C",
+          "locale=\"ja_JP\""
+        ],
+        [
+          "D",
+          "format=\"unicode\""
+        ]
+      ],
+      "answer": "B",
+      "explanation": "Windowsのデフォルト文字コードによる読み込み失敗を防ぐため、encoding=\"utf-8\" を明示的に指定します。"
+    },
+    {
+      "day": 5,
+      "number": 124,
+      "type": "四者択一",
+      "question": "json.loads() と json.load() の使い分けとして正しいものはどれか。",
+      "options": [
+        [
+          "A",
+          "json.loads() はファイルオブジェクトから直接読み込み、json.load() はメモリ上の文字列から読み込む"
+        ],
+        [
+          "B",
+          "json.loads() はメモリ上のJSON文字列（String）から読み込み、json.load() は開いたファイルオブジェクト（File-like）から直接読み込む"
+        ],
+        [
+          "C",
+          "両者の機能に一切の違いはない"
+        ],
+        [
+          "D",
+          "json.loads() は配列専用で、json.load() はオブジェクト専用である"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "末尾の s は String を意味します。文字列をパースする場合は json.loads(text)、ファイルから読み出す場合は json.load(file_object) を使用します。"
+    },
+    {
+      "day": 5,
+      "number": 125,
+      "type": "四者択一",
+      "question": "json.dumps() でJSON文字列を出力する際、人間が読みやすいように改行とインデントを適用する引数はどれか。",
+      "options": [
+        [
+          "A",
+          "pretty=True"
+        ],
+        [
+          "B",
+          "spacing=4"
+        ],
+        [
+          "C",
+          "indent=2"
+        ],
+        [
+          "D",
+          "tab=True"
+        ]
+      ],
+      "answer": "C",
+      "explanation": "indent=2 や indent=4 を指定することで、インデントと改行が付加された整形済みJSONが出力されます。"
+    },
+    {
+      "day": 6,
+      "number": 126,
+      "type": "四者択一",
+      "question": "Python開発において、プロジェクトごとに仮想環境（venv）を分離する最大の目的はどれか。",
+      "options": [
+        [
+          "A",
+          "プログラムの実行速度を10倍に高速化するため"
+        ],
+        [
+          "B",
+          "プロジェクトごとに異なるバージョンのライブラリを独立して管理し、依存関係の衝突や環境破壊を防ぐため"
+        ],
+        [
+          "C",
+          "ソースコードを自動的に暗号化するため"
+        ],
+        [
+          "D",
+          "インターネット接続なしでパッケージを新規ダウンロードするため"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "グローバル環境に全パッケージを入れるとバージョンの不整合が発生するため、プロジェクトごとに .venv を作成して環境を分離します。"
+    },
+    {
+      "day": 6,
+      "number": 127,
+      "type": "四者択一",
+      "question": "現在の仮想環境にインストールされているすべてのライブラリとその固定バージョンを、requirements.txt 形式で出力するコマンドはどれか。",
+      "options": [
+        [
+          "A",
+          "pip list --export"
+        ],
+        [
+          "B",
+          "pip freeze > requirements.txt"
+        ],
+        [
+          "C",
+          "pip dump requirements.txt"
+        ],
+        [
+          "D",
+          "python -m pip save"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "pip freeze は パッケージ名==バージョン の一覧を出力します。これをリダイレクト（>）して requirements.txt を生成します。"
+    },
+    {
+      "day": 6,
+      "number": 128,
+      "type": "四者択一",
+      "question": "現在有効化（アクティベート）されている仮想環境から抜け出し、通常のグローバル環境に戻るコマンドはどれか。",
+      "options": [
+        [
+          "A",
+          "exit"
+        ],
+        [
+          "B",
+          "quit"
+        ],
+        [
+          "C",
+          "deactivate"
+        ],
+        [
+          "D",
+          "venv stop"
+        ]
+      ],
+      "answer": "C",
+      "explanation": "ターミナルで deactivate を実行すると、仮想環境が無効化されます。"
+    },
+    {
+      "day": 6,
+      "number": 129,
+      "type": "四者択一",
+      "question": "すでにインストールされているライブラリ openai を、最新バージョンに更新（アップグレード）するコマンドはどれか。",
+      "options": [
+        [
+          "A",
+          "pip update openai"
+        ],
+        [
+          "B",
+          "pip install --upgrade openai"
+        ],
+        [
+          "C",
+          "pip refresh openai"
+        ],
+        [
+          "D",
+          "python -m pip renew openai"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "pip install --upgrade <パッケージ名>（または -U オプション）を実行して最新版に更新します。"
+    },
+    {
+      "day": 6,
+      "number": 130,
+      "type": "正誤判定",
+      "question": "仮想環境を有効化すると、ターミナルのコマンドライン先頭に (.venv) などの仮想環境名が表示され、そのシェルで実行される python や pip が仮想環境内のバイナリに切り替わる。",
+      "options": [
+        [
+          "A",
+          "正しい"
+        ],
+        [
+          "B",
+          "誤り"
+        ]
+      ],
+      "answer": "A",
+      "explanation": "有効化スクリプトにより環境変数 PATH が書き換わり、仮想環境内のPythonインタプリタが最優先で呼び出されるようになります。"
+    },
+    {
+      "day": 7,
+      "number": 131,
+      "type": "四者択一",
+      "question": "APIキーなどの認証資格情報をソースコード内に直接記述（ハードコード）することの危険性として、不適切なものはどれか。",
+      "options": [
+        [
+          "A",
+          "Gitリポジトリ共有時や公開時に第三者へ機密が漏洩する"
+        ],
+        [
+          "B",
+          "アプリケーションの実行時エラーが必ず発生して動かなくなる"
+        ],
+        [
+          "C",
+          "開発環境と本番環境で接続先キーを切り替える際にコードを書き換える必要が生じる"
+        ],
+        [
+          "D",
+          "ログ出力やエラー画面に認証情報が平文で露出するリスクが高まる"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "ハードコードしてもコード自体は動いてしまうため、開発者が危険性に気づきにくく、そのままGitコミットされて漏洩事故に繋がる点が問題です。"
+    },
+    {
+      "day": 7,
+      "number": 132,
+      "type": "四者択一",
+      "question": "Pythonの標準ライブラリ os を用いて環境変数を取得する際、os.environ[\"KEY\"] と os.getenv(\"KEY\") の挙動の違いとして正しいものはどれか。",
+      "options": [
+        [
+          "A",
+          "指定したキーが存在しない場合、os.environ[\"KEY\"] は KeyError を送出し、os.getenv(\"KEY\") は None を返す"
+        ],
+        [
+          "B",
+          "os.getenv(\"KEY\") は数値しか取得できない"
+        ],
+        [
+          "C",
+          "両者の挙動は完全に同一である"
+        ],
+        [
+          "D",
+          "os.environ[\"KEY\"] は暗号化された値を取得する"
+        ]
+      ],
+      "answer": "A",
+      "explanation": "辞書直接アクセスの os.environ[\"KEY\"] は未定義時に例外を出します。os.getenv(\"KEY\") は未定義時に None を返します。"
+    },
+    {
+      "day": 7,
+      "number": 133,
+      "type": "四者択一",
+      "question": ".env ファイル内の一般的な設定記述として正しい構文はどれか。",
+      "options": [
+        [
+          "A",
+          "const AZURE_OPENAI_KEY = \"xyz123\";"
+        ],
+        [
+          "B",
+          "AZURE_OPENAI_KEY: \"xyz123\""
+        ],
+        [
+          "C",
+          "AZURE_OPENAI_KEY=\"xyz123\""
+        ],
+        [
+          "D",
+          "<AZURE_OPENAI_KEY>xyz123</AZURE_OPENAI_KEY>"
+        ]
+      ],
+      "answer": "C",
+      "explanation": ".env はシンプルな キー=値 のペアで記述します。"
+    },
+    {
+      "day": 7,
+      "number": 134,
+      "type": "四者択一",
+      "question": "Gitリポジトリ上で .env の代わりにコミット・共有し、後続の開発者に「どのような環境変数の設定が必要か」を伝えるためのテンプレートファイルの標準的な名称はどれか。",
+      "options": [
+        [
+          "A",
+          ".env.sample または .env.example"
+        ],
+        [
+          "B",
+          ".env.secret"
+        ],
+        [
+          "C",
+          ".env.backup"
+        ],
+        [
+          "D",
+          ".env.master"
+        ]
+      ],
+      "answer": "A",
+      "explanation": "機密情報を含まないテンプレートとして .env.example や .env.sample をGit管理対象とします。"
+    },
+    {
+      "day": 7,
+      "number": 135,
+      "type": "正誤判定",
+      "question": "load_dotenv() を引数なしで実行した場合、すでにOS側の環境変数として同じ名前のキーが設定されていれば、デフォルトでは .env ファイルの値で上書きせず、OS側の既存値が優先される。",
+      "options": [
+        [
+          "A",
+          "正しい"
+        ],
+        [
+          "B",
+          "誤り"
+        ]
+      ],
+      "answer": "A",
+      "explanation": "python-dotenv の load_dotenv() はデフォルトで override=False となっており、既存の環境変数を上書きしません。"
+    },
+    {
+      "day": 8,
+      "number": 136,
+      "type": "四者択一",
+      "question": "Pythonのクラスメソッドにおいて、第1引数として渡される「インスタンス自身（実体）」を指す慣例的な変数名はどれか。\n\nclass ChatBot:\n    def send_message(???, message):\n        pass",
+      "options": [
+        [
+          "A",
+          "this"
+        ],
+        [
+          "B",
+          "self"
+        ],
+        [
+          "C",
+          "me"
+        ],
+        [
+          "D",
+          "instance"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "Pythonではインスタンスメソッドの第1引数に自身を指す参照が渡され、慣例として self という名前を使います。"
+    },
+    {
+      "day": 8,
+      "number": 137,
+      "type": "四者択一",
+      "question": "以下のコードを実行した際、コンソールに出力される文字列はどれか。\n\nclass PromptTemplate:\n    def __init__(self, role):\n        self.role = role\n\n    def format(self, text):\n        return f\"[{self.role}] {text}\"\n\ntemplate = PromptTemplate(role=\"Advisor\")\nprint(template.format(\"こんにちは\"))",
+      "options": [
+        [
+          "A",
+          "[Advisor] こんにちは"
+        ],
+        [
+          "B",
+          "[role] text"
+        ],
+        [
+          "C",
+          "Advisor こんにちは"
+        ],
+        [
+          "D",
+          "構文エラー"
+        ]
+      ],
+      "answer": "A",
+      "explanation": "template インスタンスの属性 self.role に \"Advisor\" が保持されているため、\"[Advisor] こんにちは\" が返却されます。"
+    },
+    {
+      "day": 8,
+      "number": 138,
+      "type": "四者択一",
+      "question": "クラス定義において、オブジェクトを print() 関数に渡した際や文字列に変換（str()）された際に表示される文字列表現を定義する特殊メソッドはどれか。",
+      "options": [
+        [
+          "A",
+          "__init__"
+        ],
+        [
+          "B",
+          "__str__"
+        ],
+        [
+          "C",
+          "__call__"
+        ],
+        [
+          "D",
+          "__name__"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "def __str__(self): メソッドを実装すると、オブジェクトを人間が見やすい文字列表現として出力できます。"
+    },
+    {
+      "day": 8,
+      "number": 139,
+      "type": "四者択一",
+      "question": "あるクラスの機能を引き継ぎ、新しい属性やメソッドを追加・拡張した新しいクラスを定義する「継承」の正しい構文はどれか。",
+      "options": [
+        [
+          "A",
+          "class AdvancedBot extends BaseBot:"
+        ],
+        [
+          "B",
+          "class AdvancedBot(BaseBot):"
+        ],
+        [
+          "C",
+          "class AdvancedBot implements BaseBot:"
+        ],
+        [
+          "D",
+          "class AdvancedBot inherit BaseBot:"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "Pythonではクラス名の直後の丸括弧内に親クラス（基底クラス）を指定します。"
+    },
+    {
+      "day": 8,
+      "number": 140,
+      "type": "正誤判定",
+      "question": "LlamaIndexの Document(text=\"...\", metadata={...}) や OpenAIの AzureOpenAI(...) というコードは、ライブラリ側で定義されたクラスから新しいインスタンスを生成している。",
+      "options": [
+        [
+          "A",
+          "正しい"
+        ],
+        [
+          "B",
+          "誤り"
+        ]
+      ],
+      "answer": "A",
+      "explanation": "クラス名(引数) の構文はコンストラクタを呼び出して新しいオブジェクト（インスタンス）を生成する処理です。"
+    },
+    {
+      "day": 9,
+      "number": 141,
+      "type": "四者択一",
+      "question": "Pythonの関数定義において、「文字列のリスト」を受け取り「文字列」を返すことを明示する型ヒント（Type Annotation）として適切なものはどれか。",
+      "options": [
+        [
+          "A",
+          "def process(chunks: list[str]) -> str:"
+        ],
+        [
+          "B",
+          "def process(chunks: Array<String>): String"
+        ],
+        [
+          "C",
+          "def process(chunks: str[]) -> str:"
+        ],
+        [
+          "D",
+          "def process(chunks: StringList) returns String:"
+        ]
+      ],
+      "answer": "A",
+      "explanation": "Python 3.9以降では標準のコレクション型をそのまま用いて list[str] と記述し、戻り値の型は -> 型名: で記述します。"
+    },
+    {
+      "day": 9,
+      "number": 142,
+      "type": "四者択一",
+      "question": "Pydanticのデータモデルを定義する際、親クラスとして継承しなければならない基底クラスはどれか。",
+      "options": [
+        [
+          "A",
+          "pydantic.DataClass"
+        ],
+        [
+          "B",
+          "pydantic.BaseModel"
+        ],
+        [
+          "C",
+          "pydantic.Schema"
+        ],
+        [
+          "D",
+          "pydantic.Entity"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "Pydanticでは from pydantic import BaseModel をインポートし、これを継承してスキーマを定義します。"
+    },
+    {
+      "day": 9,
+      "number": 143,
+      "type": "四者択一",
+      "question": "以下のPydanticモデルに対し、urgency に数値ではなく変換不可能な文字列 \"緊急\" を渡してインスタンス化を試みた際に発生する例外はどれか。\n\nfrom pydantic import BaseModel\n\nclass Ticket(BaseModel):\n    title: str\n    urgency: int",
+      "options": [
+        [
+          "A",
+          "TypeError"
+        ],
+        [
+          "B",
+          "ValueError"
+        ],
+        [
+          "C",
+          "pydantic.ValidationError"
+        ],
+        [
+          "D",
+          "エラーは出ず自動的に無視される"
+        ]
+      ],
+      "answer": "C",
+      "explanation": "Pydanticは初期化時にデータバリデーションを実施し、型変換が不可能な場合は ValidationError を送出します。"
+    },
+    {
+      "day": 9,
+      "number": 144,
+      "type": "四者択一",
+      "question": "Pydanticモデルのフィールドにおいて、「必須ではなく省略可能（未設定時は None）」であることを明示する定義として適切なものはどれか。",
+      "options": [
+        [
+          "A",
+          "note: str = None"
+        ],
+        [
+          "B",
+          "note: str | None = None"
+        ],
+        [
+          "C",
+          "note: Optional[str] = None"
+        ],
+        [
+          "D",
+          "BとCのどちらでも正しい"
+        ]
+      ],
+      "answer": "D",
+      "explanation": "Optional[str] = None または Python 3.10以降の str | None = None のいずれも省略可能フィールドの正しい定義です。"
+    },
+    {
+      "day": 9,
+      "number": 145,
+      "type": "四者択一",
+      "question": "Pydanticモデルのインスタンス ticket を、標準的なPythonの「辞書（dict）」オブジェクトに変換するメソッドはどれか。",
+      "options": [
+        [
+          "A",
+          "ticket.to_dict()"
+        ],
+        [
+          "B",
+          "ticket.model_dump()"
+        ],
+        [
+          "C",
+          "ticket.dict_export()"
+        ],
+        [
+          "D",
+          "dict(ticket)"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "Pydantic v2では item.model_dump() メソッドを用いて辞書型へ変換します。"
+    },
+    {
+      "day": 10,
+      "number": 147,
+      "type": "四者択一",
+      "question": "以下の簡易ナレッジ検索コードにおいて、変数 match に最終的に格納される文字列はどれか。\n\nfaq_list = [\n    {\"q\": \"Wi-Fiが繋がらない\", \"a\": \"ルーターの電源を入れ直してください。\"},\n    {\"q\": \"料金を確認したい\", \"a\": \"マイページから確認できます。\"}\n]\nuser_msg = \"家のWi-Fiが繋がらないのですが。\"\n\nmatch = \"該当なし\"\nfor faq in faq_list:\n    if faq[\"q\"] in user_msg:\n        match = faq[\"a\"]\n        break\n\nprint(match)",
+      "options": [
+        [
+          "A",
+          "該当なし"
+        ],
+        [
+          "B",
+          "ルーターの電源を入れ直してください。"
+        ],
+        [
+          "C",
+          "マイページから確認できます。"
+        ],
+        [
+          "D",
+          "空文字"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "\"Wi-Fiが繋がらない\" というキーワードが user_msg に含まれているため、if 条件が真となり対応する回答が代入されてループが終了します。"
+    },
+    {
+      "day": 10,
+      "number": 148,
+      "type": "四者択一",
+      "question": "前処理関数 clean_input を実装する際、全角・半角の正規化（NFKC）を行い、前後の改行・空白を取り除く正しい組み合わせはどれか。",
+      "options": [
+        [
+          "A",
+          "unicodedata.normalize(\"NFKC\", text).strip()"
+        ],
+        [
+          "B",
+          "text.to_half_width().clean()"
+        ],
+        [
+          "C",
+          "re.sub(text).trim()"
+        ],
+        [
+          "D",
+          "unicodedata.encode(text)"
+        ]
+      ],
+      "answer": "A",
+      "explanation": "unicodedata.normalize(\"NFKC\", text) で正規化を行い、続けて .strip() を呼ぶことで前後の空白を除去します。"
+    },
+    {
+      "day": 10,
+      "number": 149,
+      "type": "四者択一",
+      "question": "対話ログのリスト call_logs を、1行に1つのJSONオブジェクトとして書き出す「JSONL形式」で保存するループ処理として適切なものはどれか。\n\nimport json\ncall_logs = [{\"id\": 1, \"text\": \"問合せA\"}, {\"id\": 2, \"text\": \"問合せB\"}]",
+      "options": [
+        [
+          "A",
+          "with open(\"log.jsonl\", \"w\", encoding=\"utf-8\") as f:\n    json.dump(call_logs, f)"
+        ],
+        [
+          "B",
+          "with open(\"log.jsonl\", \"w\", encoding=\"utf-8\") as f:\n    for entry in call_logs:\n        f.write(json.dumps(entry, ensure_ascii=False) + \"\\n\")"
+        ],
+        [
+          "C",
+          "with open(\"log.jsonl\", \"w\") as f:\n    f.write(str(call_logs))"
+        ],
+        [
+          "D",
+          "jsonl.dump(call_logs, \"log.jsonl\")"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "JSONL（JSON Lines）は各行に独立した有効なJSON文字列を行区切りで配置する形式です。for ループ内で json.dumps(...) + \"\\n\" を順次書き込みます。"
+    },
+    {
+      "day": 10,
+      "number": 150,
+      "type": "四者択一",
+      "question": "ユーザーからの入力や外部APIのJSONパースにおいて、想定外の形式が入力されてもプログラムを途中で異常終了させず、安全にエラーメッセージをログ出力するための制御構文はどれか。",
+      "options": [
+        [
+          "A",
+          "if - else 構文"
+        ],
+        [
+          "B",
+          "try - except 構文"
+        ],
+        [
+          "C",
+          "async - await 構文"
+        ],
+        [
+          "D",
+          "assert 構文"
+        ]
+      ],
+      "answer": "B",
+      "explanation": "Pythonの例外処理は try: ブロック内にエラーが発生しうるコードを記述し、except ブロックで例外を捕捉します。"
+    }
+  ]
+}
