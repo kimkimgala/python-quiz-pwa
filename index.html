@@ -33,14 +33,14 @@ h1{margin:0 0 8px;font-size:clamp(24px,3vw,34px)}.sub,.small{color:var(--muted)}
 <div class="install" id="installBox"><strong>ホーム画面にインストールできます</strong><div class="small">アプリのように単独画面で起動できます。</div><button class="primary" id="installBtn">アプリをインストール</button></div>
 <section class="header" id="catalogView">
 <h1 id="catalogTitle">マイ教材</h1>
-<div class="sub">PWA版 v1.9・教材メタデータ・カテゴリ・検索・教材作成・自動登録・マイ教材・オフライン対応</div>
+<div class="sub">PWA版 v1.10・個人教材・共有教材・カテゴリ・検索・教材作成・オフライン対応</div>
 <div class="coursegrid" id="courseGrid"></div>
 <div class="managebar" style="gap:10px;flex-wrap:wrap"><button class="secondary" id="addCoursesBtn">教材を追加</button><button class="secondary" id="courseBuilderBtn">教材を作成</button></div>
 </section>
 <div id="courseView" class="hidden">
 <section class="header">
 <h1><span id="courseTitle">学習問題アプリ</span><br><span id="courseSubtitle"></span></h1>
-<div class="sub">PWA版 v1.9・教材メタデータ・カテゴリ・検索・教材作成・自動登録・マイ教材・オフライン対応</div>
+<div class="sub">PWA版 v1.10・個人教材・共有教材・カテゴリ・検索・教材作成・オフライン対応</div>
 <div class="controls">
 <button class="secondary wide" id="backToCatalog">← 教材を選び直す</button>
 <div><label>出題範囲</label><select id="mode"><option value="all">全問</option></select></div>
@@ -72,7 +72,7 @@ h1{margin:0 0 8px;font-size:clamp(24px,3vw,34px)}.sub,.small{color:var(--muted)}
 <div class="modalback hidden" id="addModal">
 <div class="modal">
 <h2>教材を追加</h2>
-<div class="small" style="margin-bottom:12px">配信中の教材から、使いたい教材だけをマイ教材に追加できます。</div>
+<div class="small" style="margin-bottom:12px">この端末だけの個人教材と、GitHubで共有されている教材から追加できます。</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px"><input id="courseSearch" type="search" placeholder="教材名・説明・対象者で検索" style="min-height:48px;border:1px solid var(--border);border-radius:12px;padding:10px 12px;font-size:16px"><select id="categoryFilter" style="min-height:48px"><option value="">すべてのカテゴリ</option></select></div>
 <div id="addCount" class="small" style="margin-bottom:8px"></div>
 <div id="addList"></div>
@@ -83,7 +83,7 @@ h1{margin:0 0 8px;font-size:clamp(24px,3vw,34px)}.sub,.small{color:var(--muted)}
 let CATALOG={title:'教材を選んでください',courses:[]};
 let COURSE={course_id:'default',title:'学習問題アプリ',subtitle:'',section_label:'区分',clear_count:3,questions:[]};
 let QUESTIONS=[],KEY='learning_progress_default',active=[],current=0,correct=0,answered=0,locked=false,deferredPrompt=null,pendingDelete=null;
-const LEGACY_KEY='python_quiz_progress_v1',MIGRATION_MARK='python_quiz_v1_migrated',HIDDEN_KEY='hidden_courses_v1',SUBSCRIBED_KEY='subscribed_courses_v1',SUBSCRIPTION_MIGRATION_KEY='subscriptions_v14_initialized';
+const LEGACY_KEY='python_quiz_progress_v1',MIGRATION_MARK='python_quiz_v1_migrated',HIDDEN_KEY='hidden_courses_v1',SUBSCRIBED_KEY='subscribed_courses_v1',SUBSCRIPTION_MIGRATION_KEY='subscriptions_v14_initialized',PRIVATE_COURSES_KEY='private_courses_v1';
 const $=id=>document.getElementById(id),mode=$('mode'),shuffle=$('shuffle'),options=$('options');
 function safeId(v){return String(v||'default').replace(/[^a-zA-Z0-9_-]/g,'_')}
 function progressKey(courseId){return 'learning_progress_'+safeId(courseId)}
@@ -114,12 +114,25 @@ function progressFor(id){
 let p={};try{p=JSON.parse(localStorage.getItem(progressKey(id)))||{}}catch{}
 return Object.values(p).filter(x=>(Number(x.correct)||0)+(Number(x.wrong)||0)>0).length;
 }
+function loadPrivateCourses(){try{const x=JSON.parse(localStorage.getItem(PRIVATE_COURSES_KEY));return x&&typeof x==='object'&&!Array.isArray(x)?x:{}}catch{return {}}}
+function privateCourseEntries(){
+const entries=[];for(const data of Object.values(loadPrivateCourses())){
+if(!data||!data.course_id||!Array.isArray(data.questions)||!data.questions.length)continue;
+entries.push({id:String(data.course_id),title:data.title||data.course_id,description:data.description||data.subtitle||'',category:data.category||'',difficulty:data.difficulty||'',audience:data.audience||'',author:data.author||'',version:data.version||'',updated_at:data.updated_at||'',study_time:data.study_time||'',tags:Array.isArray(data.tags)?data.tags:[],local:true,file:'data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(data))});
+}
+return entries;
+}
+function mergePrivateCourses(remote){
+const out=Array.isArray(remote)?remote.slice():[],ids=new Set(out.map(c=>String(c.id)));
+for(const c of privateCourseEntries()){if(!ids.has(String(c.id))){out.push(c);ids.add(String(c.id));}}
+return out;
+}
 async function loadCatalog(){
 try{
 const r=await fetch('./catalog.json',{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);
 const data=await r.json();if(!data||!Array.isArray(data.courses)||!data.courses.length)throw new Error('courses が空です');
 const ids=new Set();for(const c of data.courses){if(!c.id||!c.file||ids.has(String(c.id)))throw new Error('catalog の教材IDまたはファイル指定が不正です');ids.add(String(c.id))}
-CATALOG=data;initializeSubscriptions();renderCatalog();
+data.courses=mergePrivateCourses(data.courses);CATALOG=data;initializeSubscriptions();renderCatalog();
 }catch(e){$('catalogTitle').textContent='教材一覧を読み込めません';$('courseGrid').textContent=String(e)}
 }
 function renderCatalog(){
@@ -129,7 +142,7 @@ for(const c of mine){
 const card=document.createElement('div');card.className='coursecard';
 const h=document.createElement('h2');h.textContent=c.title||c.id;
 const p=document.createElement('p');p.textContent=c.description||'';
-const meta=document.createElement('div');meta.className='coursemeta';meta.textContent=`この端末で学習済み ${progressFor(c.id)}問`;
+const meta=document.createElement('div');meta.className='coursemeta';meta.textContent=(c.local?'個人教材 / ':'共有教材 / ')+`この端末で学習済み ${progressFor(c.id)}問`;
 const actions=document.createElement('div');actions.className='cardactions';
 const learn=document.createElement('button');learn.className='primary';learn.textContent='この教材を学ぶ';learn.onclick=()=>loadCourse(c);
 const del=document.createElement('button');del.className='danger';del.textContent='教材管理';del.onclick=()=>openDelete(c);
@@ -175,7 +188,7 @@ for(const c of available){
 const card=document.createElement('div');card.className='coursecard';card.style.marginBottom='10px';
 const h=document.createElement('h2');h.textContent=c.title||c.id;
 const d=document.createElement('p');d.textContent=c.description||'';
-const parts=[];if(c.category)parts.push('カテゴリ: '+c.category);if(c.difficulty)parts.push('難易度: '+c.difficulty);if(c.audience)parts.push('対象: '+c.audience);if(c.author)parts.push('作成者: '+c.author);if(c.version)parts.push('版: '+c.version);if(c.updated_at)parts.push('更新: '+c.updated_at);if(c.study_time)parts.push('目安: '+c.study_time);if(Array.isArray(c.tags)&&c.tags.length)parts.push('タグ: '+c.tags.join(', '));parts.push(`この端末で学習済み ${progressFor(c.id)}問`);
+const parts=[];parts.push(c.local?'個人教材':'共有教材');if(c.category)parts.push('カテゴリ: '+c.category);if(c.difficulty)parts.push('難易度: '+c.difficulty);if(c.audience)parts.push('対象: '+c.audience);if(c.author)parts.push('作成者: '+c.author);if(c.version)parts.push('版: '+c.version);if(c.updated_at)parts.push('更新: '+c.updated_at);if(c.study_time)parts.push('目安: '+c.study_time);if(Array.isArray(c.tags)&&c.tags.length)parts.push('タグ: '+c.tags.join(', '));parts.push(`この端末で学習済み ${progressFor(c.id)}問`);
 const meta=document.createElement('div');meta.className='coursemeta';meta.textContent=parts.join(' / ');
 const b=document.createElement('button');b.className='secondary';b.textContent='マイ教材に追加';
 b.onclick=async()=>{
