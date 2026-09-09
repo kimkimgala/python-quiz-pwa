@@ -1,6 +1,6 @@
 {
-  "name": "Python基礎集中講座 模擬問題アプリ",
-  "short_name": "Python問題",
+  "name": "スタディカード",
+  "short_name": "スタディカード",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
