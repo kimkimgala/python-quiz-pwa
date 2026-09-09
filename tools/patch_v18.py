@@ -1,0 +1,127 @@
+from pathlib import Path
+import re
+
+root = Path(__file__).resolve().parents[1]
+
+# catalog generator
+p = root / 'tools' / 'build_catalog.py'
+s = p.read_text(encoding='utf-8')
+s = s.replace('"catalog_version": 3,', '"catalog_version": 4,')
+old = '''    entry: dict[str, Any] = {
+        "id": course_id,
+        "title": title,
+        "description": description.strip(),
+        "file": relative_path,
+    }
+    if course_id in LEGACY_DEFAULT_SUBSCRIBED:
+'''
+new = '''    entry: dict[str, Any] = {
+        "id": course_id,
+        "title": title,
+        "description": description.strip(),
+        "file": relative_path,
+    }
+    for metadata_key in ("category", "difficulty", "audience"):
+        metadata_value = data.get(metadata_key)
+        if metadata_value is not None:
+            if not isinstance(metadata_value, str):
+                fail(path, f"{metadata_key} must be a string when specified")
+            metadata_value = metadata_value.strip()
+            if metadata_value:
+                entry[metadata_key] = metadata_value
+    if course_id in LEGACY_DEFAULT_SUBSCRIBED:
+'''
+if old not in s:
+    raise SystemExit('build_catalog.py patch target not found')
+s = s.replace(old, new, 1)
+p.write_text(s, encoding='utf-8')
+
+# course builder
+p = root / 'course-builder.html'
+s = p.read_text(encoding='utf-8')
+s = s.replace('教材作成アシスタント v1.7', '教材作成アシスタント v1.8')
+s = s.replace('<span class="pill">v1.7</span>', '<span class="pill">v1.8</span>')
+s = s.replace('フォーム入力に加え、Excel等で作ったCSVから問題を一括読込できます。入力・CSV内容はブラウザ内だけで処理し、サーバーへ送信しません。', 'フォーム入力やCSV一括読込に加え、カテゴリ・難易度・対象者を設定できます。入力内容はブラウザ内だけで処理し、サーバーへ送信しません。')
+marker = '<label for="description">教材の説明</label><textarea id="description"></textarea>'
+insert = marker + '<div class="grid4"><div><label for="category">カテゴリ</label><input id="category" placeholder="例: Python"></div><div><label for="difficulty">難易度</label><input id="difficulty" placeholder="例: 初級"></div><div><label for="audience">対象者</label><input id="audience" placeholder="例: 初学者"></div><div><label>分類情報</label><div class="small" style="padding-top:11px">いずれも任意項目です</div></div></div>'
+if marker not in s:
+    raise SystemExit('course-builder metadata target not found')
+s = s.replace(marker, insert, 1)
+old_build = "return{course_id:tv(byId('courseId').value),title:tv(byId('title').value),description:tv(byId('description').value),subtitle:tv(byId('subtitle').value),section_label:tv(byId('sectionLabel').value)||'章',clear_count:Number(byId('clearCount').value),questions:qs}"
+new_build = "return{course_id:tv(byId('courseId').value),title:tv(byId('title').value),description:tv(byId('description').value),category:tv(byId('category').value),difficulty:tv(byId('difficulty').value),audience:tv(byId('audience').value),subtitle:tv(byId('subtitle').value),section_label:tv(byId('sectionLabel').value)||'章',clear_count:Number(byId('clearCount').value),questions:qs}"
+if old_build not in s:
+    raise SystemExit('course-builder build target not found')
+s = s.replace(old_build, new_build, 1)
+p.write_text(s, encoding='utf-8')
+
+# main app
+p = root / 'index.html'
+s = p.read_text(encoding='utf-8')
+s = s.replace('PWA版 v1.6・教材作成アシスタント・教材自動登録・マイ教材・オフライン対応', 'PWA版 v1.8・教材カテゴリ・検索・教材作成アシスタント・教材自動登録・マイ教材・オフライン対応')
+old_modal = '<div class="small" style="margin-bottom:12px">配信中の教材から、使いたい教材だけをマイ教材に追加できます。</div>\n<div id="addList"></div>'
+new_modal = '<div class="small" style="margin-bottom:12px">配信中の教材から、使いたい教材だけをマイ教材に追加できます。</div>\n<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px"><input id="courseSearch" type="search" placeholder="教材名・説明・対象者で検索" style="min-height:48px;border:1px solid var(--border);border-radius:12px;padding:10px 12px;font-size:16px"><select id="categoryFilter" style="min-height:48px"><option value="">すべてのカテゴリ</option></select></div>\n<div id="addCount" class="small" style="margin-bottom:8px"></div>\n<div id="addList"></div>'
+if old_modal not in s:
+    raise SystemExit('index modal target not found')
+s = s.replace(old_modal, new_modal, 1)
+start = s.find('function openAdd(){')
+end = s.find('function validateCourse(data,expectedId){')
+if start < 0 or end < 0 or end <= start:
+    raise SystemExit('index openAdd block not found')
+new_open = r'''function renderAddList(){
+const list=$('addList');list.innerHTML='';
+const search=String($('courseSearch')?.value||'').trim().toLowerCase();
+const category=String($('categoryFilter')?.value||'');
+let available=CATALOG.courses.filter(c=>!isSubscribed(c.id));
+available=available.filter(c=>{
+const text=[c.title,c.description,c.category,c.difficulty,c.audience,c.id].filter(Boolean).join(' ').toLowerCase();
+return(!search||text.includes(search))&&(!category||String(c.category||'')===category);
+});
+$('addCount').textContent=`該当 ${available.length}件`;
+if(!available.length){const p=document.createElement('p');p.textContent='条件に一致する教材はありません。';list.append(p);return;}
+for(const c of available){
+const card=document.createElement('div');card.className='coursecard';card.style.marginBottom='10px';
+const h=document.createElement('h2');h.textContent=c.title||c.id;
+const d=document.createElement('p');d.textContent=c.description||'';
+const parts=[];if(c.category)parts.push('カテゴリ: '+c.category);if(c.difficulty)parts.push('難易度: '+c.difficulty);if(c.audience)parts.push('対象: '+c.audience);parts.push(`この端末で学習済み ${progressFor(c.id)}問`);
+const meta=document.createElement('div');meta.className='coursemeta';meta.textContent=parts.join(' / ');
+const b=document.createElement('button');b.className='secondary';b.textContent='マイ教材に追加';
+b.onclick=async()=>{
+b.disabled=true;b.textContent='追加中…';
+try{
+const courseUrl=new URL(c.file,location.href).href;
+const r=await fetch(courseUrl,{cache:'no-store'});if(!r.ok)throw new Error(`教材ファイル取得失敗 HTTP ${r.status} (${c.file})`);
+let data;try{data=await r.json()}catch{throw new Error(`教材JSONの解析に失敗しました (${c.file})`)}validateCourse(data,c.id);
+subscribeCourse(c.id);renderAddList();renderCatalog();
+}catch(e){alert('教材を追加できませんでした。\n'+String(e));b.disabled=false;b.textContent='マイ教材に追加'}
+};
+card.append(h,d,meta,b);list.append(card);
+}
+}
+function openAdd(){
+const select=$('categoryFilter');select.innerHTML='<option value="">すべてのカテゴリ</option>';
+const categories=[...new Set(CATALOG.courses.filter(c=>!isSubscribed(c.id)&&c.category).map(c=>String(c.category)))].sort((a,b)=>a.localeCompare(b,'ja'));
+for(const cat of categories){const o=document.createElement('option');o.value=cat;o.textContent=cat;select.append(o)}
+$('courseSearch').value='';select.value='';renderAddList();$('addModal').classList.remove('hidden');
+}
+$('courseSearch').addEventListener('input',renderAddList);
+$('categoryFilter').addEventListener('change',renderAddList);
+'''
+s = s[:start] + new_open + s[end:]
+p.write_text(s, encoding='utf-8')
+
+# cache refresh
+p = root / 'service-worker.js'
+s = p.read_text(encoding='utf-8')
+s = re.sub(r"const CACHE_NAME='python-quiz-pwa-v1-[^']+';", "const CACHE_NAME='python-quiz-pwa-v1-8';", s, count=1)
+p.write_text(s, encoding='utf-8')
+
+# README
+p = root / 'README.md'
+s = p.read_text(encoding='utf-8')
+s = re.sub(r'^# Python Quiz PWA v1\.\d+', '# Python Quiz PWA v1.8', s, count=1, flags=re.M)
+intro = '\n## v1.8 のポイント\n\nv1.8では、教材数が増えた場合に備えて教材カテゴリと検索機能を追加しました。\n\n- 教材JSONに任意の `category`、`difficulty`、`audience` を設定可能\n- 教材作成アシスタントから分類情報を入力可能\n- `tools/build_catalog.py` が分類情報を `catalog.json` へ引き継ぐ\n- 「教材を追加」画面で教材名・説明・カテゴリ・難易度・対象者・IDを文字検索\n- カテゴリによる絞り込み\n- 分類情報のない既存教材もそのまま利用可能\n\n'
+if '## v1.8 のポイント' not in s:
+    first_break = s.find('\n')
+    second_break = s.find('\n', first_break + 1)
+    s = s[:second_break + 1] + intro + s[second_break + 1:]
+p.write_text(s, encoding='utf-8')
