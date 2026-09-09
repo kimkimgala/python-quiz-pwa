@@ -1,5 +1,5 @@
-const CACHE_NAME='python-quiz-pwa-v1-11-icon1';
-const APP_FILES=['./','./index.html','./course-builder.html','./manifest.json','./catalog.json','./questions.json','./courses/cassette-demo.json','./icon-192.png','./icon-512.png'];
+const CACHE_NAME='python-quiz-pwa-v1-11-icon2';
+const APP_FILES=['./','./index.html','./course-builder.html','./manifest.json','./catalog.json','./questions.json','./courses/cassette-demo.json','./app-icon-card-check-192-v2.png','./app-icon-card-check-512-v2.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(APP_FILES)));self.skipWaiting();});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE_NAME).map(k=>caches.delete(k)))));self.clients.claim();});
 self.addEventListener('fetch',e=>{
