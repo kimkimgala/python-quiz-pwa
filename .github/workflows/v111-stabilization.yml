@@ -20,7 +20,7 @@ jobs:
           grep -q "教材作成アシスタント v1.11" course-builder.html
           grep -q "python-quiz-pwa-v1-11" service-worker.js
           grep -q "個人教材をバックアップ" index.html
-          grep -q "saveLocalCourse" course-builder.html
+          grep -q "v111-builder-stability" course-builder.html
       - name: Commit v1.11
         run: |
           git config user.name "github-actions[bot]"
