@@ -1,0 +1,81 @@
+name: Update PWA to v1.9
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/v19-app-update.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  update-v19:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch v1.9
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          # build_catalog.py
+          p=Path('tools/build_catalog.py')
+          s=p.read_text(encoding='utf-8')
+          s=s.replace('for metadata_key in ("category", "difficulty", "audience"):', 'for metadata_key in ("category", "difficulty", "audience", "author", "version", "updated_at", "study_time"):')
+          old='''            if metadata_value:\n                entry[metadata_key] = metadata_value\n    if course_id in LEGACY_DEFAULT_SUBSCRIBED:\n'''
+          new='''            if metadata_value:\n                entry[metadata_key] = metadata_value\n    tags = data.get("tags")\n    if tags is not None:\n        if not isinstance(tags, list) or not all(isinstance(tag, str) for tag in tags):\n            fail(path, "tags must be an array of strings when specified")\n        cleaned_tags = [tag.strip() for tag in tags if tag.strip()]\n        if cleaned_tags:\n            entry["tags"] = list(dict.fromkeys(cleaned_tags))\n    if course_id in LEGACY_DEFAULT_SUBSCRIBED:\n'''
+          if old not in s: raise SystemExit('catalog metadata patch target not found')
+          s=s.replace(old,new,1).replace('"catalog_version": 4,','"catalog_version": 5,')
+          p.write_text(s,encoding='utf-8')
+
+          # course-builder.html
+          p=Path('course-builder.html'); s=p.read_text(encoding='utf-8')
+          s=s.replace('教材作成アシスタント v1.8','教材作成アシスタント v1.9').replace('<span class="pill">v1.8</span>','<span class="pill">v1.9</span>')
+          s=s.replace('フォーム入力やCSV一括読込に加え、カテゴリ・難易度・対象者を設定できます。入力内容はブラウザ内だけで処理し、サーバーへ送信しません。','フォーム入力やCSV一括読込に加え、分類情報と作成者・版・更新日・タグ・想定学習時間を設定できます。入力内容はブラウザ内だけで処理し、サーバーへ送信しません。')
+          marker='<div class="grid4"><div><label for="category">カテゴリ</label><input id="category" placeholder="例: Python"></div><div><label for="difficulty">難易度</label><input id="difficulty" placeholder="例: 初級"></div><div><label for="audience">対象者</label><input id="audience" placeholder="例: 初学者"></div><div><label>分類情報</label><div class="small" style="padding-top:11px">いずれも任意項目です</div></div></div>'
+          insert=marker+'<div class="grid4"><div><label for="author">作成者</label><input id="author" placeholder="例: 山田太郎"></div><div><label for="courseVersion">教材バージョン</label><input id="courseVersion" placeholder="例: 1.0"></div><div><label for="updatedAt">更新日</label><input id="updatedAt" type="date"></div><div><label for="studyTime">想定学習時間</label><input id="studyTime" placeholder="例: 30分"></div></div><label for="tags">タグ</label><input id="tags" placeholder="例: 基礎,資格試験,入門"><div class="small">複数タグはカンマ区切りで入力します。</div>'
+          if marker not in s: raise SystemExit('builder metadata marker not found')
+          s=s.replace(marker,insert,1)
+          old_build="category:tv(byId('category').value),difficulty:tv(byId('difficulty').value),audience:tv(byId('audience').value),subtitle:tv(byId('subtitle').value)"
+          new_build="category:tv(byId('category').value),difficulty:tv(byId('difficulty').value),audience:tv(byId('audience').value),author:tv(byId('author').value),version:tv(byId('courseVersion').value),updated_at:tv(byId('updatedAt').value),study_time:tv(byId('studyTime').value),tags:tv(byId('tags').value).split(',').map(function(x){return tv(x)}).filter(function(x){return x}),subtitle:tv(byId('subtitle').value)"
+          if old_build not in s: raise SystemExit('builder build target not found')
+          s=s.replace(old_build,new_build,1)
+          p.write_text(s,encoding='utf-8')
+
+          # index.html
+          p=Path('index.html'); s=p.read_text(encoding='utf-8')
+          s=s.replace('PWA版 v1.8・教材カテゴリ・検索・教材作成アシスタント・教材自動登録・マイ教材・オフライン対応','PWA版 v1.9・教材メタデータ・カテゴリ・検索・教材作成・自動登録・マイ教材・オフライン対応')
+          s=s.replace("const text=[c.title,c.description,c.category,c.difficulty,c.audience,c.id].filter(Boolean).join(' ').toLowerCase();","const text=[c.title,c.description,c.category,c.difficulty,c.audience,c.author,c.version,c.updated_at,c.study_time,c.id].concat(Array.isArray(c.tags)?c.tags:[]).filter(Boolean).join(' ').toLowerCase();")
+          old_parts="const parts=[];if(c.category)parts.push('カテゴリ: '+c.category);if(c.difficulty)parts.push('難易度: '+c.difficulty);if(c.audience)parts.push('対象: '+c.audience);parts.push(`この端末で学習済み ${progressFor(c.id)}問`);"
+          new_parts="const parts=[];if(c.category)parts.push('カテゴリ: '+c.category);if(c.difficulty)parts.push('難易度: '+c.difficulty);if(c.audience)parts.push('対象: '+c.audience);if(c.author)parts.push('作成者: '+c.author);if(c.version)parts.push('版: '+c.version);if(c.updated_at)parts.push('更新: '+c.updated_at);if(c.study_time)parts.push('目安: '+c.study_time);if(Array.isArray(c.tags)&&c.tags.length)parts.push('タグ: '+c.tags.join(', '));parts.push(`この端末で学習済み ${progressFor(c.id)}問`);"
+          if old_parts not in s: raise SystemExit('index meta display target not found')
+          s=s.replace(old_parts,new_parts,1)
+          p.write_text(s,encoding='utf-8')
+
+          # service worker
+          p=Path('service-worker.js'); s=p.read_text(encoding='utf-8')
+          s=re.sub(r"const CACHE_NAME='python-quiz-pwa-v1-[^']+';", "const CACHE_NAME='python-quiz-pwa-v1-9';", s, count=1)
+          p.write_text(s,encoding='utf-8')
+
+          # README
+          p=Path('README.md'); s=p.read_text(encoding='utf-8')
+          s=re.sub(r'^# Python Quiz PWA v1\.\d+', '# Python Quiz PWA v1.9', s, count=1, flags=re.M)
+          intro='''\n## v1.9 のポイント\n\nv1.9では、教材を選ぶときの判断材料を増やすため、教材メタデータを強化しました。\n\n- 任意項目として `author`、`version`、`updated_at`、`study_time`、`tags` を追加\n- `tags` は文字列配列として保存\n- 教材作成アシスタントから各項目を入力可能\n- `tools/build_catalog.py` がメタデータを検証して `catalog.json` へ引き継ぐ\n- 「教材を追加」の検索対象に作成者・版・更新日・タグ・想定学習時間を追加\n- 教材カードに利用可能なメタデータを表示\n- 既存教材はメタデータがなくても従来どおり利用可能\n\n'''
+          if '## v1.9 のポイント' not in s:
+              pos=s.find('\n',s.find('\n')+1); s=s[:pos+1]+intro+s[pos+1:]
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Verify and rebuild catalog
+        run: |
+          python -m py_compile tools/build_catalog.py
+          python tools/build_catalog.py
+      - name: Commit v1.9
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tools/build_catalog.py course-builder.html index.html service-worker.js README.md catalog.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "feat: add v1.9 course metadata [skip ci]"
+          git push
