@@ -143,7 +143,7 @@ def validate_course(path: Path) -> dict[str, Any]:
         "description": description.strip(),
         "file": relative_path,
     }
-    for metadata_key in ("category", "difficulty", "audience"):
+    for metadata_key in ("category", "difficulty", "audience", "author", "version", "updated_at", "study_time"):
         metadata_value = data.get(metadata_key)
         if metadata_value is not None:
             if not isinstance(metadata_value, str):
@@ -151,6 +151,13 @@ def validate_course(path: Path) -> dict[str, Any]:
             metadata_value = metadata_value.strip()
             if metadata_value:
                 entry[metadata_key] = metadata_value
+    tags = data.get("tags")
+    if tags is not None:
+        if not isinstance(tags, list) or not all(isinstance(tag, str) for tag in tags):
+            fail(path, "tags must be an array of strings when specified")
+        cleaned_tags = [tag.strip() for tag in tags if tag.strip()]
+        if cleaned_tags:
+            entry["tags"] = list(dict.fromkeys(cleaned_tags))
     if course_id in LEGACY_DEFAULT_SUBSCRIBED:
         entry["default_subscribed"] = True
     return entry
@@ -182,7 +189,7 @@ def build_catalog() -> dict[str, Any]:
         entries.append(entry)
 
     return {
-        "catalog_version": 4,
+        "catalog_version": 5,
         "title": "配信教材一覧",
         "courses": entries,
     }
