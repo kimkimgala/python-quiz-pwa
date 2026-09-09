@@ -33,14 +33,14 @@ h1{margin:0 0 8px;font-size:clamp(24px,3vw,34px)}.sub,.small{color:var(--muted)}
 <div class="install" id="installBox"><strong>ホーム画面にインストールできます</strong><div class="small">アプリのように単独画面で起動できます。</div><button class="primary" id="installBtn">アプリをインストール</button></div>
 <section class="header" id="catalogView">
 <h1 id="catalogTitle">マイ教材</h1>
-<div class="sub">PWA版 v1.10・個人教材・共有教材・カテゴリ・検索・教材作成・オフライン対応</div>
+<div class="sub">PWA版 v1.11・安定化・個人教材編集・バックアップ・共有教材・オフライン対応</div>
 <div class="coursegrid" id="courseGrid"></div>
-<div class="managebar" style="gap:10px;flex-wrap:wrap"><button class="secondary" id="addCoursesBtn">教材を追加</button><button class="secondary" id="courseBuilderBtn">教材を作成</button></div>
+<div class="managebar" style="gap:10px;flex-wrap:wrap"><button class="secondary" id="addCoursesBtn">教材を追加</button><button class="secondary" id="courseBuilderBtn">教材を作成</button><button class="secondary" id="backupPrivateBtn">個人教材をバックアップ</button><button class="secondary" id="restorePrivateBtn">個人教材を復元</button><input id="restorePrivateFile" type="file" accept="application/json,.json" class="hidden"></div>
 </section>
 <div id="courseView" class="hidden">
 <section class="header">
 <h1><span id="courseTitle">学習問題アプリ</span><br><span id="courseSubtitle"></span></h1>
-<div class="sub">PWA版 v1.10・個人教材・共有教材・カテゴリ・検索・教材作成・オフライン対応</div>
+<div class="sub">PWA版 v1.11・安定化・個人教材編集・バックアップ・共有教材・オフライン対応</div>
 <div class="controls">
 <button class="secondary wide" id="backToCatalog">← 教材を選び直す</button>
 <div><label>出題範囲</label><select id="mode"><option value="all">全問</option></select></div>
@@ -115,6 +115,13 @@ let p={};try{p=JSON.parse(localStorage.getItem(progressKey(id)))||{}}catch{}
 return Object.values(p).filter(x=>(Number(x.correct)||0)+(Number(x.wrong)||0)>0).length;
 }
 function loadPrivateCourses(){try{const x=JSON.parse(localStorage.getItem(PRIVATE_COURSES_KEY));return x&&typeof x==='object'&&!Array.isArray(x)?x:{}}catch{return {}}}
+function savePrivateCourses(map){try{localStorage.setItem(PRIVATE_COURSES_KEY,JSON.stringify(map));return true}catch(e){alert(e&&e.name==='QuotaExceededError'?'端末の保存容量が不足しています。バックアップ後に不要な個人教材を削除してください。':'個人教材を保存できませんでした。\n'+String(e));return false}}
+function remoteCourseIds(){const ids=new Set();for(const c of CATALOG.courses||[]){if(!c.local)ids.add(String(c.id))}return ids}
+function refreshCatalogWithPrivate(){const remote=(CATALOG.courses||[]).filter(c=>!c.local);CATALOG.courses=mergePrivateCourses(remote);renderCatalog()}
+function deletePrivateCourse(id){const map=loadPrivateCourses();if(!map[id])return false;delete map[id];if(!savePrivateCourses(map))return false;unsubscribeCourse(id);localStorage.removeItem(progressKey(id));refreshCatalogWithPrivate();return true}
+function downloadText(name,text){const blob=new Blob([text],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+function backupPrivateCourses(){const map=loadPrivateCourses();const pkg={format:'python-quiz-private-backup',version:1,exported_at:new Date().toISOString(),courses:Object.values(map)};downloadText('private-courses-backup.json',JSON.stringify(pkg,null,2))}
+async function restorePrivateCourses(file){let pkg;try{pkg=JSON.parse(await file.text())}catch(e){alert('バックアップJSONを読み込めませんでした。');return}if(!pkg||pkg.format!=='python-quiz-private-backup'||!Array.isArray(pkg.courses)){alert('このファイルは個人教材バックアップではありません。');return}const remote=remoteCourseIds(),map=loadPrivateCourses();for(const d of pkg.courses){if(!d||!d.course_id||!Array.isArray(d.questions)||!d.questions.length){alert('不正な教材データが含まれています。復元を中止しました。');return}if(remote.has(String(d.course_id))){alert('共有教材と同じID「'+d.course_id+'」が含まれるため復元できません。');return}}const dup=pkg.courses.filter(d=>map[d.course_id]).map(d=>d.course_id);if(dup.length&&!confirm('既存の個人教材 '+dup.join(', ')+' を上書きして復元しますか？'))return;for(const d of pkg.courses)map[d.course_id]=d;if(!savePrivateCourses(map))return;for(const d of pkg.courses)subscribeCourse(d.course_id);refreshCatalogWithPrivate();alert('個人教材を復元しました。')}
 function privateCourseEntries(){
 const entries=[];for(const data of Object.values(loadPrivateCourses())){
 if(!data||!data.course_id||!Array.isArray(data.questions)||!data.questions.length)continue;
@@ -132,8 +139,8 @@ try{
 const r=await fetch('./catalog.json',{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);
 const data=await r.json();if(!data||!Array.isArray(data.courses)||!data.courses.length)throw new Error('courses が空です');
 const ids=new Set();for(const c of data.courses){if(!c.id||!c.file||ids.has(String(c.id)))throw new Error('catalog の教材IDまたはファイル指定が不正です');ids.add(String(c.id))}
-data.courses=mergePrivateCourses(data.courses);CATALOG=data;initializeSubscriptions();renderCatalog();
-}catch(e){$('catalogTitle').textContent='教材一覧を読み込めません';$('courseGrid').textContent=String(e)}
+try{localStorage.setItem('shared_course_ids_v1',JSON.stringify(data.courses.map(c=>String(c.id))))}catch(e){}data.courses=mergePrivateCourses(data.courses);CATALOG=data;initializeSubscriptions();renderCatalog();
+}catch(e){CATALOG={title:'マイ教材',courses:privateCourseEntries()};initializeSubscriptions();renderCatalog();if(!CATALOG.courses.length){$('catalogTitle').textContent='オフライン：共有教材一覧を取得できません';$('courseGrid').textContent='個人教材もありません。オンライン時に再度開いてください。'}}
 }
 function renderCatalog(){
 $('catalogTitle').textContent='マイ教材';const g=$('courseGrid');g.innerHTML='';
@@ -145,8 +152,7 @@ const p=document.createElement('p');p.textContent=c.description||'';
 const meta=document.createElement('div');meta.className='coursemeta';meta.textContent=(c.local?'個人教材 / ':'共有教材 / ')+`この端末で学習済み ${progressFor(c.id)}問`;
 const actions=document.createElement('div');actions.className='cardactions';
 const learn=document.createElement('button');learn.className='primary';learn.textContent='この教材を学ぶ';learn.onclick=()=>loadCourse(c);
-const del=document.createElement('button');del.className='danger';del.textContent='教材管理';del.onclick=()=>openDelete(c);
-actions.append(learn,del);card.append(h,p,meta,actions);g.append(card);
+if(c.local){const edit=document.createElement('button');edit.className='secondary';edit.textContent='編集';edit.onclick=()=>{location.href='./course-builder.html?edit='+encodeURIComponent(c.id)};const erase=document.createElement('button');erase.className='danger';erase.textContent='完全削除';erase.onclick=()=>{if(confirm('個人教材「'+(c.title||c.id)+'」と学習成績をこの端末から完全に削除しますか？'))deletePrivateCourse(c.id)};actions.append(learn,edit,erase)}else{const del=document.createElement('button');del.className='danger';del.textContent='教材管理';del.onclick=()=>openDelete(c);actions.append(learn,del)}card.append(h,p,meta,actions);g.append(card);
 }
 if(!mine.length){
 const box=document.createElement('div');box.className='coursecard';
@@ -326,6 +332,9 @@ $('dashBtn').onclick=showDash;
 $('resetBtn').onclick=()=>{if(confirm('この教材の学習履歴をすべて削除しますか？')){localStorage.removeItem(KEY);alert('学習履歴を削除しました。');start()}};
 $('backToCatalog').onclick=()=>{$('courseView').classList.add('hidden');$('catalogView').classList.remove('hidden');document.title='学習問題アプリ';renderCatalog()};
 $('addCoursesBtn').onclick=openAdd;$('courseBuilderBtn').onclick=()=>{location.href='./course-builder.html'};
+$('backupPrivateBtn').onclick=backupPrivateCourses;
+$('restorePrivateBtn').onclick=()=>$('restorePrivateFile').click();
+$('restorePrivateFile').addEventListener('change',async e=>{const f=e.target.files&&e.target.files[0];if(f)await restorePrivateCourses(f);e.target.value=''});
 $('confirmDeleteBtn').onclick=confirmDelete;
 $('cancelDeleteBtn').onclick=closeDelete;
 $('closeAddBtn').onclick=()=>$('addModal').classList.add('hidden');
