@@ -1,0 +1,49 @@
+name: Phase UI-4 builder
+on:
+  push:
+    branches: [ui-v2/phase-ui-4-builder]
+    paths:
+      - tools/phase_ui4_patch.py
+      - .github/workflows/phase-ui4-builder.yml
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ui-v2/phase-ui-4-builder
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Apply Phase UI-4 patch
+        run: python tools/phase_ui4_patch.py
+      - name: Validate builder structure
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('course-builder.html').read_text(encoding='utf-8')
+          required=['data-step="1"','data-step="2"','data-step="3"','id="courseId"','id="csvFile"','id="importCsvBtn"','id="addQuestionBtn"','id="saveLocalBtn"','id="downloadBtn"']
+          for x in required:
+              assert x in s, x
+          scripts=re.findall(r'<script>(.*?)</script>',s,flags=re.S)
+          assert len(scripts)>=2
+          for i,body in enumerate(scripts):
+              Path(f'/tmp/builder-{i}.js').write_text(body,encoding='utf-8')
+          print('scripts',len(scripts))
+          PY
+          for f in /tmp/builder-*.js; do node --check "$f"; done
+      - name: Commit implementation
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add course-builder.html
+          git commit -m "Implement Phase UI-4 builder wizard"
+          git push
+      - name: Remove temporary patch files
+        run: |
+          git rm tools/phase_ui4_patch.py .github/workflows/phase-ui4-builder.yml
+          git commit -m "chore: remove Phase UI-4 patch helpers"
+          git push
