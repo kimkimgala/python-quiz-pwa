@@ -143,6 +143,14 @@ def validate_course(path: Path) -> dict[str, Any]:
         "description": description.strip(),
         "file": relative_path,
     }
+    for metadata_key in ("category", "difficulty", "audience"):
+        metadata_value = data.get(metadata_key)
+        if metadata_value is not None:
+            if not isinstance(metadata_value, str):
+                fail(path, f"{metadata_key} must be a string when specified")
+            metadata_value = metadata_value.strip()
+            if metadata_value:
+                entry[metadata_key] = metadata_value
     if course_id in LEGACY_DEFAULT_SUBSCRIBED:
         entry["default_subscribed"] = True
     return entry
@@ -174,7 +182,7 @@ def build_catalog() -> dict[str, Any]:
         entries.append(entry)
 
     return {
-        "catalog_version": 3,
+        "catalog_version": 4,
         "title": "配信教材一覧",
         "courses": entries,
     }

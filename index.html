@@ -33,14 +33,14 @@ h1{margin:0 0 8px;font-size:clamp(24px,3vw,34px)}.sub,.small{color:var(--muted)}
 <div class="install" id="installBox"><strong>ホーム画面にインストールできます</strong><div class="small">アプリのように単独画面で起動できます。</div><button class="primary" id="installBtn">アプリをインストール</button></div>
 <section class="header" id="catalogView">
 <h1 id="catalogTitle">マイ教材</h1>
-<div class="sub">PWA版 v1.6・教材作成アシスタント・教材自動登録・マイ教材・オフライン対応</div>
+<div class="sub">PWA版 v1.8・教材カテゴリ・検索・教材作成アシスタント・教材自動登録・マイ教材・オフライン対応</div>
 <div class="coursegrid" id="courseGrid"></div>
 <div class="managebar" style="gap:10px;flex-wrap:wrap"><button class="secondary" id="addCoursesBtn">教材を追加</button><button class="secondary" id="courseBuilderBtn">教材を作成</button></div>
 </section>
 <div id="courseView" class="hidden">
 <section class="header">
 <h1><span id="courseTitle">学習問題アプリ</span><br><span id="courseSubtitle"></span></h1>
-<div class="sub">PWA版 v1.6・教材作成アシスタント・教材自動登録・マイ教材・オフライン対応</div>
+<div class="sub">PWA版 v1.8・教材カテゴリ・検索・教材作成アシスタント・教材自動登録・マイ教材・オフライン対応</div>
 <div class="controls">
 <button class="secondary wide" id="backToCatalog">← 教材を選び直す</button>
 <div><label>出題範囲</label><select id="mode"><option value="all">全問</option></select></div>
@@ -73,6 +73,8 @@ h1{margin:0 0 8px;font-size:clamp(24px,3vw,34px)}.sub,.small{color:var(--muted)}
 <div class="modal">
 <h2>教材を追加</h2>
 <div class="small" style="margin-bottom:12px">配信中の教材から、使いたい教材だけをマイ教材に追加できます。</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px"><input id="courseSearch" type="search" placeholder="教材名・説明・対象者で検索" style="min-height:48px;border:1px solid var(--border);border-radius:12px;padding:10px 12px;font-size:16px"><select id="categoryFilter" style="min-height:48px"><option value="">すべてのカテゴリ</option></select></div>
+<div id="addCount" class="small" style="margin-bottom:8px"></div>
 <div id="addList"></div>
 <div class="modalactions" style="margin-top:16px"><button id="closeAddBtn">閉じる</button></div>
 </div>
@@ -158,17 +160,23 @@ const title=pendingDelete.title||pendingDelete.id;
 closeDelete();renderCatalog();
 alert(choice==='remove'?`「${title}」をマイ教材から外し、学習成績も削除しました。`:`「${title}」をマイ教材から外しました。学習成績は残っています。`);
 }
-function openAdd(){
+function renderAddList(){
 const list=$('addList');list.innerHTML='';
-const available=CATALOG.courses.filter(c=>!isSubscribed(c.id));
-if(!available.length){
-const p=document.createElement('p');p.textContent='追加できる教材はありません。';list.append(p);
-}else{
+const search=String($('courseSearch')?.value||'').trim().toLowerCase();
+const category=String($('categoryFilter')?.value||'');
+let available=CATALOG.courses.filter(c=>!isSubscribed(c.id));
+available=available.filter(c=>{
+const text=[c.title,c.description,c.category,c.difficulty,c.audience,c.id].filter(Boolean).join(' ').toLowerCase();
+return(!search||text.includes(search))&&(!category||String(c.category||'')===category);
+});
+$('addCount').textContent=`該当 ${available.length}件`;
+if(!available.length){const p=document.createElement('p');p.textContent='条件に一致する教材はありません。';list.append(p);return;}
 for(const c of available){
 const card=document.createElement('div');card.className='coursecard';card.style.marginBottom='10px';
 const h=document.createElement('h2');h.textContent=c.title||c.id;
 const d=document.createElement('p');d.textContent=c.description||'';
-const meta=document.createElement('div');meta.className='coursemeta';meta.textContent=`この端末で学習済み ${progressFor(c.id)}問`;
+const parts=[];if(c.category)parts.push('カテゴリ: '+c.category);if(c.difficulty)parts.push('難易度: '+c.difficulty);if(c.audience)parts.push('対象: '+c.audience);parts.push(`この端末で学習済み ${progressFor(c.id)}問`);
+const meta=document.createElement('div');meta.className='coursemeta';meta.textContent=parts.join(' / ');
 const b=document.createElement('button');b.className='secondary';b.textContent='マイ教材に追加';
 b.onclick=async()=>{
 b.disabled=true;b.textContent='追加中…';
@@ -176,14 +184,20 @@ try{
 const courseUrl=new URL(c.file,location.href).href;
 const r=await fetch(courseUrl,{cache:'no-store'});if(!r.ok)throw new Error(`教材ファイル取得失敗 HTTP ${r.status} (${c.file})`);
 let data;try{data=await r.json()}catch{throw new Error(`教材JSONの解析に失敗しました (${c.file})`)}validateCourse(data,c.id);
-subscribeCourse(c.id);openAdd();renderCatalog();
+subscribeCourse(c.id);renderAddList();renderCatalog();
 }catch(e){alert('教材を追加できませんでした。\n'+String(e));b.disabled=false;b.textContent='マイ教材に追加'}
 };
 card.append(h,d,meta,b);list.append(card);
 }
 }
-$('addModal').classList.remove('hidden');
+function openAdd(){
+const select=$('categoryFilter');select.innerHTML='<option value="">すべてのカテゴリ</option>';
+const categories=[...new Set(CATALOG.courses.filter(c=>!isSubscribed(c.id)&&c.category).map(c=>String(c.category)))].sort((a,b)=>a.localeCompare(b,'ja'));
+for(const cat of categories){const o=document.createElement('option');o.value=cat;o.textContent=cat;select.append(o)}
+$('courseSearch').value='';select.value='';renderAddList();$('addModal').classList.remove('hidden');
 }
+$('courseSearch').addEventListener('input',renderAddList);
+$('categoryFilter').addEventListener('change',renderAddList);
 function validateCourse(data,expectedId){
 if(!data||!Array.isArray(data.questions)||!data.questions.length)throw new Error('questions が空です');
 if(!data.course_id)throw new Error('course_id がありません');
