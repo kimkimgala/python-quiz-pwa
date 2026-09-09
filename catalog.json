@@ -1,18 +1,20 @@
 {
-  "catalog_version": 1,
-  "title": "教材を選んでください",
+  "catalog_version": 2,
+  "title": "配信教材一覧",
   "courses": [
     {
       "id": "python-basic-v1",
       "title": "Python基礎集中講座",
       "description": "現在のPython基礎教材（49問）",
-      "file": "questions.json"
+      "file": "questions.json",
+      "default_subscribed": true
     },
     {
       "id": "cassette-demo-v1",
       "title": "カセット方式 動作確認教材",
       "description": "教材切替と教材別成績保存を確認するための5問",
-      "file": "courses/cassette-demo.json"
+      "file": "courses/cassette-demo.json",
+      "default_subscribed": true
     }
   ]
 }
