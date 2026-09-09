@@ -5,10 +5,10 @@
   "section_label": "章",
   "clear_count": 3,
   "questions": [
-    {"day":1,"number":1,"type":"四者択一","question":"このアプリで教材本体を表すファイル形式として採用しているものはどれか。","options":[["A","JSON"],["B","PDF"],["C","Word"],["D","JPEG"]],"answer":"A","explanation":"v1.2では教材データをJSONファイルとして読み込みます。"},
+    {"day":1,"number":1,"type":"四者択一","question":"このアプリで教材本体を表すファイル形式として採用しているものはどれか。","options":[["A","JSON"],["B","PDF"],["C","Word"],["D","JPEG"]],"answer":"A","explanation":"教材データはJSONファイルとして読み込みます。"},
     {"day":1,"number":2,"type":"正誤判定","question":"教材を切り替えても、教材ごとの学習履歴は同じ1つの成績として混在する。","options":[["A","正しい"],["B","誤り"]],"answer":"B","explanation":"course_idごとに保存先を分けるため、教材ごとの成績は分離されます。"},
-    {"day":1,"number":3,"type":"四者択一","question":"教材一覧を管理する目録ファイルはどれか。","options":[["A","manifest.json"],["B","catalog.json"],["C","service-worker.js"],["D","README.md"]],"answer":"B","explanation":"catalog.jsonに教材名、説明、教材ファイルの場所を登録します。"},
+    {"day":1,"number":3,"type":"四者択一","question":"配信中の教材一覧を管理する目録ファイルはどれか。","options":[["A","manifest.json"],["B","catalog.json"],["C","service-worker.js"],["D","README.md"]],"answer":"B","explanation":"catalog.jsonが配信教材一覧を保持します。v1.5ではこのファイルは自動生成されます。"},
     {"day":2,"number":4,"type":"正誤判定","question":"一度読み込んだ教材は、キャッシュが残っていればオフラインでも利用できる。","options":[["A","正しい"],["B","誤り"]],"answer":"A","explanation":"Service Workerが取得済み教材をキャッシュするため、オフライン時の再利用が可能です。"},
-    {"day":2,"number":5,"type":"四者択一","question":"新しい教材を追加するとき、原則として変更が必要なものの組合せはどれか。","options":[["A","教材JSONとcatalog.json"],["B","毎回index.htmlだけ"],["C","毎回manifest.jsonだけ"],["D","アイコンだけ"]],"answer":"A","explanation":"教材JSONを追加し、catalog.jsonにその教材を登録するのが基本です。"}
+    {"day":2,"number":5,"type":"四者択一","question":"v1.5で新しい教材を通常追加するとき、原則として必要な作業はどれか。","options":[["A","coursesフォルダに教材JSONを追加する"],["B","毎回catalog.jsonを手作業で編集する"],["C","毎回index.htmlを書き換える"],["D","毎回アイコンを作り直す"]],"answer":"A","explanation":"v1.5ではcoursesフォルダに教材JSONを追加するとGitHub Actionsが検証し、catalog.jsonを自動生成・更新します。"}
   ]
 }
