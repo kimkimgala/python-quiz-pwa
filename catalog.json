@@ -15,6 +15,12 @@
       "description": "教材切替と教材別成績保存を確認するための5問",
       "file": "courses/cassette-demo.json",
       "default_subscribed": true
+    },
+    {
+      "id": "catalog-auto-test-v1",
+      "title": "カタログ自動登録テスト教材",
+      "description": "v1.5の教材JSON追加からcatalog.json自動登録までを確認するためのテスト教材",
+      "file": "courses/catalog-auto-test-v1.json"
     }
   ]
 }
