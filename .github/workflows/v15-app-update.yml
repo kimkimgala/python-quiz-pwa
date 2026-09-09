@@ -1,0 +1,59 @@
+name: Update PWA shell to v1.5
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/v15-app-update.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-app-shell:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Patch v1.5 app shell
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          s = s.replace(
+              'PWA版 v1.4・マイ教材・教材追加・オフライン対応・教材別学習履歴',
+              'PWA版 v1.5・教材自動登録・マイ教材・オフライン対応・教材別学習履歴'
+          )
+          s = s.replace(
+              "const r=await fetch('./'+c.file,{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);\nconst data=await r.json();validateCourse(data,c.id);",
+              "const courseUrl=new URL(c.file,location.href).href;\nconst r=await fetch(courseUrl,{cache:'no-store'});if(!r.ok)throw new Error(`教材ファイル取得失敗 HTTP ${r.status} (${c.file})`);\nlet data;try{data=await r.json()}catch{throw new Error(`教材JSONの解析に失敗しました (${c.file})`)}validateCourse(data,c.id);"
+          )
+          s = s.replace(
+              "const r=await fetch('./'+item.file,{cache:'no-store'});\nif(!r.ok)throw new Error(`HTTP ${r.status}`);\nconst data=await r.json();validateCourse(data,item.id);",
+              "const courseUrl=new URL(item.file,location.href).href;\nconst r=await fetch(courseUrl,{cache:'no-store'});\nif(!r.ok)throw new Error(`教材ファイル取得失敗 HTTP ${r.status} (${item.file})`);\nlet data;try{data=await r.json()}catch{throw new Error(`教材JSONの解析に失敗しました (${item.file})`)}validateCourse(data,item.id);"
+          )
+          p.write_text(s, encoding='utf-8')
+
+          sw = Path('service-worker.js')
+          t = sw.read_text(encoding='utf-8')
+          t = t.replace("python-quiz-pwa-v1-4", "python-quiz-pwa-v1-5")
+          sw.write_text(t, encoding='utf-8')
+          PY
+
+      - name: Commit v1.5 shell update
+        shell: bash
+        run: |
+          if git diff --quiet -- index.html service-worker.js; then
+            echo "No changes needed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html service-worker.js
+          git commit -m "fix: publish v1.5 app shell [skip ci]"
+          git push
