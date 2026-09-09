@@ -6,9 +6,9 @@
 <meta name="theme-color" content="#2f6fed">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="app-icon-card-check-192-v2.png">
-<title>学習問題アプリ</title>
+<title>スタディカード</title>
 <style>
-:root{--bg:#f5f7fb;--card:#fff;--text:#1e2430;--muted:#667085;--border:#d8dee9;--accent:#2f6fed;--good:#147a3d;--bad:#b42318;--soft:#eef3ff;--good-soft:#ecfdf3;--bad-soft:#fff1f0}
+:root{--bg:#f5f7fb;--card:#fff;--text:#1e2430;--muted:#667085;--border:#d8dee9;--accent:#2f6fed;--accent-deep:#1d4ed8;--good:#147a3d;--bad:#b42318;--soft:#eef3ff;--good-soft:#ecfdf3;--bad-soft:#fff1f0}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP","Yu Gothic UI",sans-serif}
 .app{max-width:960px;margin:auto;padding:16px}.header,.card,.status{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:14px}
 h1{margin:0 0 8px;font-size:clamp(24px,3vw,34px)}.sub,.small{color:var(--muted)}.controls{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
@@ -28,18 +28,21 @@ h1{margin:0 0 8px;font-size:clamp(24px,3vw,34px)}.sub,.small{color:var(--muted)}
 .coursegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px}.coursecard{border:1px solid var(--border);border-radius:16px;padding:16px;background:#fff}.coursecard h2{margin:0 0 8px;font-size:21px}.coursecard p{min-height:48px;color:var(--muted)}.coursemeta{font-size:14px;color:var(--muted);margin-bottom:10px}
 .cardactions{display:grid;grid-template-columns:1fr auto;gap:8px}.managebar{display:flex;justify-content:flex-end;margin-top:14px}.managebar button{width:auto;min-width:180px}.hidden{display:none!important}
 .modalback{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;padding:18px;z-index:20}.modal{max-width:520px;width:100%;background:#fff;border-radius:18px;border:1px solid var(--border);padding:20px}.modal h2{margin-top:0}.modalchoices{display:grid;gap:10px;margin:16px 0}.modalchoice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);border-radius:12px;padding:12px}.modalchoice input{width:22px;height:22px;margin-top:2px}.modalactions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#catalogView.home-shell{background:transparent;border:0;padding:0;margin-bottom:80px}.home-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:4px 0 16px}.home-brand{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--accent);margin-bottom:3px}.home-head h1{font-size:30px;line-height:1.15;margin:0}.home-head .small{font-size:13px;text-align:right}.resume-banner{border:0;border-radius:24px;padding:20px;margin-bottom:18px;color:#fff;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-deep) 62%,#4338ca 100%);box-shadow:0 16px 34px rgba(47,111,237,.22);position:relative;overflow:hidden}.resume-banner:after{content:"";position:absolute;width:150px;height:150px;right:-42px;bottom:-70px;border-radius:50%;background:rgba(255,255,255,.10)}.resume-content{position:relative;z-index:1}.resume-kicker{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:800;color:#dbeafe;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:5px 9px}.resume-title{font-size:21px;font-weight:900;line-height:1.35;margin:11px 0 4px}.resume-meta{font-size:13px;color:#dbeafe;margin-bottom:14px}.resume-progress{height:8px;background:rgba(15,23,42,.28);border-radius:999px;overflow:hidden;margin:4px 0 14px}.resume-progress>div{height:100%;background:#6ee7b7;border-radius:999px}.resume-btn{background:#fff;color:#1d4ed8;border:0;min-height:48px;font-size:15px;box-shadow:0 8px 18px rgba(15,23,42,.18)}.home-section-title{display:flex;justify-content:space-between;align-items:center;margin:4px 2px 8px;font-size:13px;font-weight:800;color:#475467}.home-section-title strong{font-size:16px;color:#1f2937}.home-section-title button{width:auto;min-height:40px;padding:7px 11px;font-size:13px}.home-shell .coursegrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:0}.home-shell .coursecard{border:1px solid #e2e8f0;border-radius:22px;padding:17px;box-shadow:0 7px 24px rgba(15,23,42,.05);transition:transform .12s ease,border-color .15s ease,box-shadow .15s ease}.home-shell .coursecard:hover{border-color:#bfd0ff;box-shadow:0 10px 26px rgba(47,111,237,.09)}.course-card-top{display:flex;gap:12px;align-items:flex-start}.course-icon{width:50px;height:50px;flex:0 0 50px;border-radius:16px;background:var(--soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:24px}.course-main{min-width:0;flex:1}.home-shell .coursecard h2{font-size:18px;line-height:1.35;margin:0 0 5px}.course-badge{display:inline-block;font-size:11px;font-weight:800;padding:4px 7px;border-radius:999px;background:#f2f4f7;color:#475467}.course-badge.local{background:#f3e8ff;color:#7e22ce}.course-desc{font-size:14px;line-height:1.5;color:var(--muted);margin:11px 0;min-height:0!important}.course-progress-copy{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:#667085;margin-top:11px}.course-progress-track{height:7px;border-radius:999px;background:#edf0f5;overflow:hidden;margin:6px 0 12px}.course-progress-track>div{height:100%;background:linear-gradient(90deg,#2f6fed,#10b981);border-radius:999px}.home-shell .cardactions{grid-template-columns:1fr auto;align-items:center}.home-shell .cardactions button{min-height:46px;font-size:14px}.home-shell .cardactions .danger,.home-shell .cardactions .secondary{width:auto;padding-left:12px;padding-right:12px}.home-tools{margin-top:18px;padding:14px;border-radius:18px;background:#eef2f7;border:1px solid #e2e8f0}.home-tools-title{font-size:12px;font-weight:800;color:#667085;margin:0 0 9px}.home-tools .managebar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0}.home-tools .managebar button{min-width:0;width:100%;min-height:44px;font-size:13px;padding:8px}.home-bottom-nav{display:none}.empty-card{text-align:center;padding:28px 18px!important}.empty-card p{min-height:0!important}.course-loading{font-size:12px;color:#98a2b3}.course-progress-track.pending>div{width:0!important}
 @media(min-width:700px){.two-col{grid-template-columns:1fr 1fr}}
-@media(max-width:700px){.controls,.coursegrid,.modalactions{grid-template-columns:1fr}.wide{grid-column:auto}.dashboard{grid-template-columns:repeat(2,1fr)}.app{padding:12px}.cardactions{grid-template-columns:1fr}.managebar button{width:100%}#courseView>.header{padding:14px;margin-bottom:10px}#courseView>.notice{font-size:14px}.question{font-size:19px;line-height:1.62}.option{min-height:60px;padding:12px 14px;font-size:17px}.options{gap:10px}.actions{position:sticky;bottom:calc(env(safe-area-inset-bottom) + 8px);z-index:8;padding:8px;background:rgba(245,247,251,.94);backdrop-filter:blur(8px);border-radius:18px}#feedback{scroll-margin-bottom:88px}}
+@media(max-width:700px){.controls,.coursegrid,.modalactions{grid-template-columns:1fr}.wide{grid-column:auto}.dashboard{grid-template-columns:repeat(2,1fr)}.app{padding:12px}.cardactions{grid-template-columns:1fr}.managebar button{width:100%}#courseView>.header{padding:14px;margin-bottom:10px}#courseView>.notice{font-size:14px}.question{font-size:19px;line-height:1.62}.option{min-height:60px;padding:12px 14px;font-size:17px}.options{gap:10px}.actions{position:sticky;bottom:calc(env(safe-area-inset-bottom) + 8px);z-index:8;padding:8px;background:rgba(245,247,251,.94);backdrop-filter:blur(8px);border-radius:18px}#feedback{scroll-margin-bottom:88px}.home-head{align-items:flex-start}.home-head .small{display:none}.home-head h1{font-size:28px}.home-shell .coursegrid{grid-template-columns:1fr}.resume-banner{padding:18px}.resume-title{font-size:19px}.home-tools .managebar{grid-template-columns:1fr 1fr}.home-shell .cardactions{grid-template-columns:1fr auto}.home-bottom-nav{display:grid;grid-template-columns:repeat(3,1fr);position:fixed;left:0;right:0;bottom:0;z-index:15;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-top:1px solid #dfe4ec;padding:7px max(8px,env(safe-area-inset-right)) calc(7px + env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));box-shadow:0 -8px 24px rgba(15,23,42,.06)}.home-bottom-nav button{border:0;background:transparent;min-height:50px;padding:5px;font-size:11px;color:#667085;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}.home-bottom-nav button strong{font-size:18px;line-height:1}.home-bottom-nav button.active{color:var(--accent)}}
 </style>
 </head>
 <body>
 <div class="app">
 <div class="install" id="installBox"><strong>ホーム画面にインストールできます</strong><div class="small">アプリのように単独画面で起動できます。</div><button class="primary" id="installBtn">アプリをインストール</button></div>
-<section class="header" id="catalogView">
-<h1 id="catalogTitle">マイ教材</h1>
-<div class="sub">PWA版 v1.11・安定化・個人教材編集・バックアップ・共有教材・オフライン対応</div>
+<section class="header home-shell" id="catalogView">
+<div class="home-head"><div><div class="home-brand">STUDY CARD</div><h1 id="catalogTitle">マイ教材</h1></div><div class="small">学習の仕組みは共通、教材は自由に入れ替える。</div></div>
+<div class="resume-banner hidden" id="resumeBanner"><div class="resume-content"><span class="resume-kicker">▶ 前回のつづき</span><div class="resume-title" id="resumeTitle"></div><div class="resume-meta" id="resumeMeta"></div><div class="resume-progress"><div id="resumeProgressBar"></div></div><button class="resume-btn" id="resumeBtn">つづきから学ぶ</button></div></div>
+<div class="home-section-title"><strong>教材カセット</strong><button class="secondary" id="addCoursesBtn">＋ 教材を追加</button></div>
 <div class="coursegrid" id="courseGrid"></div>
-<div class="managebar" style="gap:10px;flex-wrap:wrap"><button class="secondary" id="addCoursesBtn">教材を追加</button><button class="secondary" id="courseBuilderBtn">教材を作成</button><button class="secondary" id="backupPrivateBtn">個人教材をバックアップ</button><button class="secondary" id="restorePrivateBtn">個人教材を復元</button><input id="restorePrivateFile" type="file" accept="application/json,.json" class="hidden"></div>
+<div class="home-tools"><div class="home-tools-title">教材管理・バックアップ</div><div class="managebar"><button class="secondary" id="courseBuilderBtn">教材を作成</button><button class="secondary" id="backupPrivateBtn">個人教材をバックアップ</button><button class="secondary" id="restorePrivateBtn">個人教材を復元</button><button class="secondary" id="openAddBtn">教材カタログ</button><input id="restorePrivateFile" type="file" accept="application/json,.json" class="hidden"></div></div>
+<nav class="home-bottom-nav" aria-label="メインナビゲーション"><button class="active" type="button"><strong>⌂</strong><span>マイ教材</span></button><button id="bottomResumeBtn" type="button"><strong>▶</strong><span>学習再開</span></button><button id="bottomBuilderBtn" type="button"><strong>＋</strong><span>教材作成</span></button></nav>
 </section>
 <div id="courseView" class="hidden">
 <section class="header">
@@ -87,7 +90,7 @@ h1{margin:0 0 8px;font-size:clamp(24px,3vw,34px)}.sub,.small{color:var(--muted)}
 let CATALOG={title:'教材を選んでください',courses:[]};
 let COURSE={course_id:'default',title:'学習問題アプリ',subtitle:'',section_label:'区分',clear_count:3,questions:[]};
 let QUESTIONS=[],KEY='learning_progress_default',active=[],current=0,correct=0,answered=0,locked=false,deferredPrompt=null,pendingDelete=null;
-const LEGACY_KEY='python_quiz_progress_v1',MIGRATION_MARK='python_quiz_v1_migrated',HIDDEN_KEY='hidden_courses_v1',SUBSCRIBED_KEY='subscribed_courses_v1',SUBSCRIPTION_MIGRATION_KEY='subscriptions_v14_initialized',PRIVATE_COURSES_KEY='private_courses_v1';
+const LEGACY_KEY='python_quiz_progress_v1',MIGRATION_MARK='python_quiz_v1_migrated',HIDDEN_KEY='hidden_courses_v1',SUBSCRIBED_KEY='subscribed_courses_v1',SUBSCRIPTION_MIGRATION_KEY='subscriptions_v14_initialized',PRIVATE_COURSES_KEY='private_courses_v1',LAST_STUDY_KEY='last_studied_v1';
 const $=id=>document.getElementById(id),mode=$('mode'),shuffle=$('shuffle'),options=$('options');
 function safeId(v){return String(v||'default').replace(/[^a-zA-Z0-9_-]/g,'_')}
 function progressKey(courseId){return 'learning_progress_'+safeId(courseId)}
@@ -105,19 +108,11 @@ function saveSubscribed(ids){localStorage.setItem(SUBSCRIBED_KEY,JSON.stringify(
 function isSubscribed(id){return loadSubscribed().includes(String(id))}
 function subscribeCourse(id){const ids=loadSubscribed();if(!ids.includes(String(id)))ids.push(String(id));saveSubscribed(ids)}
 function unsubscribeCourse(id){saveSubscribed(loadSubscribed().filter(x=>x!==String(id)))}
-function initializeSubscriptions(){
-if(localStorage.getItem(SUBSCRIPTION_MIGRATION_KEY))return;
-if(localStorage.getItem(SUBSCRIBED_KEY)===null){
-const hidden=new Set(loadHidden());
-const initial=CATALOG.courses.filter(c=>c.default_subscribed===true&&!hidden.has(String(c.id))).map(c=>String(c.id));
-saveSubscribed(initial);
-}
-localStorage.setItem(SUBSCRIPTION_MIGRATION_KEY,'1');
-}
-function progressFor(id){
-let p={};try{p=JSON.parse(localStorage.getItem(progressKey(id)))||{}}catch{}
-return Object.values(p).filter(x=>(Number(x.correct)||0)+(Number(x.wrong)||0)>0).length;
-}
+function initializeSubscriptions(){if(localStorage.getItem(SUBSCRIPTION_MIGRATION_KEY))return;if(localStorage.getItem(SUBSCRIBED_KEY)===null){const hidden=new Set(loadHidden());const initial=CATALOG.courses.filter(c=>c.default_subscribed===true&&!hidden.has(String(c.id))).map(c=>String(c.id));saveSubscribed(initial)}localStorage.setItem(SUBSCRIPTION_MIGRATION_KEY,'1')}
+function progressFor(id){let p={};try{p=JSON.parse(localStorage.getItem(progressKey(id)))||{}}catch{}return Object.values(p).filter(x=>(Number(x.correct)||0)+(Number(x.wrong)||0)>0).length}
+function loadProgressFor(id){try{return JSON.parse(localStorage.getItem(progressKey(id)))||{}}catch{return {}}}
+function loadLastStudy(){try{const x=JSON.parse(localStorage.getItem(LAST_STUDY_KEY));return x&&x.course_id?x:null}catch{return null}}
+function saveLastStudy(q){if(!q||!COURSE.course_id||!active.length)return;try{localStorage.setItem(LAST_STUDY_KEY,JSON.stringify({course_id:String(COURSE.course_id),question_number:q.number,position:current+1,total:active.length,updated_at:Date.now()}))}catch{}}
 function loadPrivateCourses(){try{const x=JSON.parse(localStorage.getItem(PRIVATE_COURSES_KEY));return x&&typeof x==='object'&&!Array.isArray(x)?x:{}}catch{return {}}}
 function savePrivateCourses(map){try{localStorage.setItem(PRIVATE_COURSES_KEY,JSON.stringify(map));return true}catch(e){alert(e&&e.name==='QuotaExceededError'?'端末の保存容量が不足しています。バックアップ後に不要な個人教材を削除してください。':'個人教材を保存できませんでした。\n'+String(e));return false}}
 function remoteCourseIds(){const ids=new Set();for(const c of CATALOG.courses||[]){if(!c.local)ids.add(String(c.id))}return ids}
@@ -126,227 +121,33 @@ function deletePrivateCourse(id){const map=loadPrivateCourses();if(!map[id])retu
 function downloadText(name,text){const blob=new Blob([text],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 function backupPrivateCourses(){const map=loadPrivateCourses();const pkg={format:'python-quiz-private-backup',version:1,exported_at:new Date().toISOString(),courses:Object.values(map)};downloadText('private-courses-backup.json',JSON.stringify(pkg,null,2))}
 async function restorePrivateCourses(file){let pkg;try{pkg=JSON.parse(await file.text())}catch(e){alert('バックアップJSONを読み込めませんでした。');return}if(!pkg||pkg.format!=='python-quiz-private-backup'||!Array.isArray(pkg.courses)){alert('このファイルは個人教材バックアップではありません。');return}const remote=remoteCourseIds(),map=loadPrivateCourses();for(const d of pkg.courses){if(!d||!d.course_id||!Array.isArray(d.questions)||!d.questions.length){alert('不正な教材データが含まれています。復元を中止しました。');return}if(remote.has(String(d.course_id))){alert('共有教材と同じID「'+d.course_id+'」が含まれるため復元できません。');return}}const dup=pkg.courses.filter(d=>map[d.course_id]).map(d=>d.course_id);if(dup.length&&!confirm('既存の個人教材 '+dup.join(', ')+' を上書きして復元しますか？'))return;for(const d of pkg.courses)map[d.course_id]=d;if(!savePrivateCourses(map))return;for(const d of pkg.courses)subscribeCourse(d.course_id);refreshCatalogWithPrivate();alert('個人教材を復元しました。')}
-function privateCourseEntries(){
-const entries=[];for(const data of Object.values(loadPrivateCourses())){
-if(!data||!data.course_id||!Array.isArray(data.questions)||!data.questions.length)continue;
-entries.push({id:String(data.course_id),title:data.title||data.course_id,description:data.description||data.subtitle||'',category:data.category||'',difficulty:data.difficulty||'',audience:data.audience||'',author:data.author||'',version:data.version||'',updated_at:data.updated_at||'',study_time:data.study_time||'',tags:Array.isArray(data.tags)?data.tags:[],local:true,file:'data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(data))});
-}
-return entries;
-}
-function mergePrivateCourses(remote){
-const out=Array.isArray(remote)?remote.slice():[],ids=new Set(out.map(c=>String(c.id)));
-for(const c of privateCourseEntries()){if(!ids.has(String(c.id))){out.push(c);ids.add(String(c.id));}}
-return out;
-}
-async function loadCatalog(){
-try{
-const r=await fetch('./catalog.json',{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);
-const data=await r.json();if(!data||!Array.isArray(data.courses)||!data.courses.length)throw new Error('courses が空です');
-const ids=new Set();for(const c of data.courses){if(!c.id||!c.file||ids.has(String(c.id)))throw new Error('catalog の教材IDまたはファイル指定が不正です');ids.add(String(c.id))}
-try{localStorage.setItem('shared_course_ids_v1',JSON.stringify(data.courses.map(c=>String(c.id))))}catch(e){}data.courses=mergePrivateCourses(data.courses);CATALOG=data;initializeSubscriptions();renderCatalog();
-}catch(e){CATALOG={title:'マイ教材',courses:privateCourseEntries()};initializeSubscriptions();renderCatalog();if(!CATALOG.courses.length){$('catalogTitle').textContent='オフライン：共有教材一覧を取得できません';$('courseGrid').textContent='個人教材もありません。オンライン時に再度開いてください。'}}
-}
-function renderCatalog(){
-$('catalogTitle').textContent='マイ教材';const g=$('courseGrid');g.innerHTML='';
-const mine=CATALOG.courses.filter(c=>isSubscribed(c.id));
-for(const c of mine){
-const card=document.createElement('div');card.className='coursecard';
-const h=document.createElement('h2');h.textContent=c.title||c.id;
-const p=document.createElement('p');p.textContent=c.description||'';
-const meta=document.createElement('div');meta.className='coursemeta';meta.textContent=(c.local?'個人教材 / ':'共有教材 / ')+`この端末で学習済み ${progressFor(c.id)}問`;
-const actions=document.createElement('div');actions.className='cardactions';
-const learn=document.createElement('button');learn.className='primary';learn.textContent='この教材を学ぶ';learn.onclick=()=>loadCourse(c);
-if(c.local){const edit=document.createElement('button');edit.className='secondary';edit.textContent='編集';edit.onclick=()=>{location.href='./course-builder.html?edit='+encodeURIComponent(c.id)};const erase=document.createElement('button');erase.className='danger';erase.textContent='完全削除';erase.onclick=()=>{if(confirm('個人教材「'+(c.title||c.id)+'」と学習成績をこの端末から完全に削除しますか？'))deletePrivateCourse(c.id)};actions.append(learn,edit,erase)}else{const del=document.createElement('button');del.className='danger';del.textContent='教材管理';del.onclick=()=>openDelete(c);actions.append(learn,del)}card.append(h,p,meta,actions);g.append(card);
-}
-if(!mine.length){
-const box=document.createElement('div');box.className='coursecard';
-const h=document.createElement('h2');h.textContent='マイ教材はまだありません';
-const p=document.createElement('p');p.textContent='「教材を追加」から使いたい教材を選んでください。';
-box.append(h,p);g.append(box);
-}
-const available=CATALOG.courses.filter(c=>!isSubscribed(c.id)).length;
-$('addCoursesBtn').textContent=available?`教材を追加（${available}）`:'教材を追加';
-}
-function openDelete(course){
-pendingDelete=course;
-$('deleteCourseName').textContent=`「${course.title||course.id}」をマイ教材から外します。`;
-document.querySelector('input[name=deleteMode][value=keep]').checked=true;
-$('deleteModal').classList.remove('hidden');
-}
+function privateCourseEntries(){const entries=[];for(const data of Object.values(loadPrivateCourses())){if(!data||!data.course_id||!Array.isArray(data.questions)||!data.questions.length)continue;entries.push({id:String(data.course_id),title:data.title||data.course_id,description:data.description||data.subtitle||'',category:data.category||'',difficulty:data.difficulty||'',audience:data.audience||'',author:data.author||'',version:data.version||'',updated_at:data.updated_at||'',study_time:data.study_time||'',tags:Array.isArray(data.tags)?data.tags:[],local:true,file:'data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(data))})}return entries}
+function mergePrivateCourses(remote){const out=Array.isArray(remote)?remote.slice():[],ids=new Set(out.map(c=>String(c.id)));for(const c of privateCourseEntries()){if(!ids.has(String(c.id))){out.push(c);ids.add(String(c.id));}}return out}
+async function loadCatalog(){try{const r=await fetch('./catalog.json',{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);const data=await r.json();if(!data||!Array.isArray(data.courses)||!data.courses.length)throw new Error('courses が空です');const ids=new Set();for(const c of data.courses){if(!c.id||!c.file||ids.has(String(c.id)))throw new Error('catalog の教材IDまたはファイル指定が不正です');ids.add(String(c.id))}try{localStorage.setItem('shared_course_ids_v1',JSON.stringify(data.courses.map(c=>String(c.id))))}catch(e){}data.courses=mergePrivateCourses(data.courses);CATALOG=data;initializeSubscriptions();renderCatalog()}catch(e){CATALOG={title:'マイ教材',courses:privateCourseEntries()};initializeSubscriptions();renderCatalog();if(!CATALOG.courses.length){$('catalogTitle').textContent='オフライン：共有教材一覧を取得できません';$('courseGrid').textContent='個人教材もありません。オンライン時に再度開いてください。'}}}
+function renderResumeBanner(){const info=loadLastStudy(),banner=$('resumeBanner'),bottom=$('bottomResumeBtn');if(!info){banner.classList.add('hidden');if(bottom)bottom.disabled=true;return}const c=CATALOG.courses.find(x=>String(x.id)===String(info.course_id)&&isSubscribed(x.id));if(!c){banner.classList.add('hidden');if(bottom)bottom.disabled=true;return}const pos=Math.max(1,Number(info.position)||1),total=Math.max(pos,Number(info.total)||pos),pct=Math.max(0,Math.min(100,pos/total*100));$('resumeTitle').textContent=c.title||c.id;$('resumeMeta').textContent=`問${info.question_number} から再開 ・ 前回 ${pos} / ${total} 問`;$('resumeProgressBar').style.width=pct+'%';banner.classList.remove('hidden');const go=()=>resumeLastStudy();$('resumeBtn').onclick=go;if(bottom){bottom.disabled=false;bottom.onclick=go}}
+async function resumeLastStudy(){const info=loadLastStudy();if(!info)return;const c=CATALOG.courses.find(x=>String(x.id)===String(info.course_id)&&isSubscribed(x.id));if(!c)return;await loadCourse(c,info.question_number)}
+async function enrichCourseCard(c,card){try{const courseUrl=new URL(c.file,location.href).href,r=await fetch(courseUrl);if(!r.ok)throw new Error('fetch');const data=await r.json();if(!data||!Array.isArray(data.questions)||!data.questions.length)throw new Error('data');const cc=Number.isInteger(Number(data.clear_count))&&Number(data.clear_count)>0?Number(data.clear_count):3,p=loadProgressFor(c.id),total=data.questions.length,studied=data.questions.filter(q=>{const s=p[q.number]||{};return(Number(s.correct)||0)+(Number(s.wrong)||0)>0}).length,mastered=data.questions.filter(q=>(Number((p[q.number]||{}).correct)||0)>=cc).length,pct=total?mastered/total*100:0;const copy=card.querySelector('.course-progress-copy'),bar=card.querySelector('.course-progress-track');if(copy)copy.innerHTML=`<span>学習済み ${studied}/${total}問</span><strong>習得 ${mastered}問</strong>`;if(bar){bar.classList.remove('pending');const fill=bar.firstElementChild;if(fill)fill.style.width=pct+'%'}}catch{const copy=card.querySelector('.course-progress-copy');if(copy)copy.innerHTML=`<span>この端末で学習済み ${progressFor(c.id)}問</span><span class="course-loading">詳細は学習時に更新</span>`}}
+function renderCatalog(){$('catalogTitle').textContent='マイ教材';const g=$('courseGrid');g.innerHTML='';const mine=CATALOG.courses.filter(c=>isSubscribed(c.id));for(const c of mine){const card=document.createElement('div');card.className='coursecard';card.dataset.courseId=String(c.id);const top=document.createElement('div');top.className='course-card-top';const icon=document.createElement('div');icon.className='course-icon';icon.textContent=c.local?'✎':'▣';const main=document.createElement('div');main.className='course-main';const h=document.createElement('h2');h.textContent=c.title||c.id;const badge=document.createElement('span');badge.className='course-badge'+(c.local?' local':'');badge.textContent=c.local?'自作':'共有';main.append(h,badge);top.append(icon,main);const p=document.createElement('p');p.className='course-desc';p.textContent=c.description||'';const copy=document.createElement('div');copy.className='course-progress-copy';copy.innerHTML=`<span>学習済み ${progressFor(c.id)}問</span><span class="course-loading">読み込み中…</span>`;const track=document.createElement('div');track.className='course-progress-track pending';track.innerHTML='<div style="width:0%"></div>';const actions=document.createElement('div');actions.className='cardactions';const learn=document.createElement('button');learn.className='primary';learn.textContent='この教材を学ぶ';learn.onclick=()=>loadCourse(c);if(c.local){const edit=document.createElement('button');edit.className='secondary';edit.textContent='編集';edit.onclick=()=>{location.href='./course-builder.html?edit='+encodeURIComponent(c.id)};const erase=document.createElement('button');erase.className='danger';erase.textContent='削除';erase.onclick=()=>{if(confirm('個人教材「'+(c.title||c.id)+'」と学習成績をこの端末から完全に削除しますか？'))deletePrivateCourse(c.id)};actions.append(learn,edit,erase)}else{const del=document.createElement('button');del.className='secondary';del.textContent='管理';del.onclick=()=>openDelete(c);actions.append(learn,del)}card.append(top,p,copy,track,actions);g.append(card);enrichCourseCard(c,card)}if(!mine.length){const box=document.createElement('div');box.className='coursecard empty-card';const h=document.createElement('h2');h.textContent='マイ教材はまだありません';const p=document.createElement('p');p.textContent='「教材を追加」から使いたい教材を選んでください。';box.append(h,p);g.append(box)}const available=CATALOG.courses.filter(c=>!isSubscribed(c.id)).length;$('addCoursesBtn').textContent=available?`＋ 教材を追加（${available}）`:'＋ 教材を追加';renderResumeBanner()}
+function openDelete(course){pendingDelete=course;$('deleteCourseName').textContent=`「${course.title||course.id}」をマイ教材から外します。`;document.querySelector('input[name=deleteMode][value=keep]').checked=true;$('deleteModal').classList.remove('hidden')}
 function closeDelete(){$('deleteModal').classList.add('hidden');pendingDelete=null}
-function confirmDelete(){
-if(!pendingDelete)return;
-const choice=document.querySelector('input[name=deleteMode]:checked')?.value||'keep';
-unsubscribeCourse(pendingDelete.id);
-if(choice==='remove')localStorage.removeItem(progressKey(pendingDelete.id));
-const title=pendingDelete.title||pendingDelete.id;
-closeDelete();renderCatalog();
-alert(choice==='remove'?`「${title}」をマイ教材から外し、学習成績も削除しました。`:`「${title}」をマイ教材から外しました。学習成績は残っています。`);
-}
-function renderAddList(){
-const list=$('addList');list.innerHTML='';
-const search=String($('courseSearch')?.value||'').trim().toLowerCase();
-const category=String($('categoryFilter')?.value||'');
-let available=CATALOG.courses.filter(c=>!isSubscribed(c.id));
-available=available.filter(c=>{
-const text=[c.title,c.description,c.category,c.difficulty,c.audience,c.author,c.version,c.updated_at,c.study_time,c.id].concat(Array.isArray(c.tags)?c.tags:[]).filter(Boolean).join(' ').toLowerCase();
-return(!search||text.includes(search))&&(!category||String(c.category||'')===category);
-});
-$('addCount').textContent=`該当 ${available.length}件`;
-if(!available.length){const p=document.createElement('p');p.textContent='条件に一致する教材はありません。';list.append(p);return;}
-for(const c of available){
-const card=document.createElement('div');card.className='coursecard';card.style.marginBottom='10px';
-const h=document.createElement('h2');h.textContent=c.title||c.id;
-const d=document.createElement('p');d.textContent=c.description||'';
-const parts=[];parts.push(c.local?'個人教材':'共有教材');if(c.category)parts.push('カテゴリ: '+c.category);if(c.difficulty)parts.push('難易度: '+c.difficulty);if(c.audience)parts.push('対象: '+c.audience);if(c.author)parts.push('作成者: '+c.author);if(c.version)parts.push('版: '+c.version);if(c.updated_at)parts.push('更新: '+c.updated_at);if(c.study_time)parts.push('目安: '+c.study_time);if(Array.isArray(c.tags)&&c.tags.length)parts.push('タグ: '+c.tags.join(', '));parts.push(`この端末で学習済み ${progressFor(c.id)}問`);
-const meta=document.createElement('div');meta.className='coursemeta';meta.textContent=parts.join(' / ');
-const b=document.createElement('button');b.className='secondary';b.textContent='マイ教材に追加';
-b.onclick=async()=>{
-b.disabled=true;b.textContent='追加中…';
-try{
-const courseUrl=new URL(c.file,location.href).href;
-const r=await fetch(courseUrl,{cache:'no-store'});if(!r.ok)throw new Error(`教材ファイル取得失敗 HTTP ${r.status} (${c.file})`);
-let data;try{data=await r.json()}catch{throw new Error(`教材JSONの解析に失敗しました (${c.file})`)}validateCourse(data,c.id);
-subscribeCourse(c.id);renderAddList();renderCatalog();
-}catch(e){alert('教材を追加できませんでした。\n'+String(e));b.disabled=false;b.textContent='マイ教材に追加'}
-};
-card.append(h,d,meta,b);list.append(card);
-}
-}
-function openAdd(){
-const select=$('categoryFilter');select.innerHTML='<option value="">すべてのカテゴリ</option>';
-const categories=[...new Set(CATALOG.courses.filter(c=>!isSubscribed(c.id)&&c.category).map(c=>String(c.category)))].sort((a,b)=>a.localeCompare(b,'ja'));
-for(const cat of categories){const o=document.createElement('option');o.value=cat;o.textContent=cat;select.append(o)}
-$('courseSearch').value='';select.value='';renderAddList();$('addModal').classList.remove('hidden');
-}
-$('courseSearch').addEventListener('input',renderAddList);
-$('categoryFilter').addEventListener('change',renderAddList);
-function validateCourse(data,expectedId){
-if(!data||!Array.isArray(data.questions)||!data.questions.length)throw new Error('questions が空です');
-if(!data.course_id)throw new Error('course_id がありません');
-if(expectedId&&data.course_id!==expectedId)throw new Error('catalog の id と教材の course_id が一致しません');
-const nums=new Set();
-for(const q of data.questions){
-if(q.number===undefined||nums.has(String(q.number)))throw new Error('問題番号が未設定または重複しています');
-nums.add(String(q.number));
-if(!Array.isArray(q.options)||!q.options.length||!q.answer)throw new Error(`問${q.number}の選択肢または正解が不正です`);
-}
-}
-async function loadCourse(item){
-try{
-const courseUrl=new URL(item.file,location.href).href;
-const r=await fetch(courseUrl,{cache:'no-store'});
-if(!r.ok)throw new Error(`教材ファイル取得失敗 HTTP ${r.status} (${item.file})`);
-let data;try{data=await r.json()}catch{throw new Error(`教材JSONの解析に失敗しました (${item.file})`)}validateCourse(data,item.id);
-const cc=Number(data.clear_count);
-COURSE={course_id:data.course_id,title:data.title||item.title||'学習問題アプリ',subtitle:data.subtitle||'',section_label:data.section_label||'区分',clear_count:Number.isInteger(cc)&&cc>0?cc:3,questions:data.questions};
-QUESTIONS=COURSE.questions;configureCourse();
-$('catalogView').classList.add('hidden');$('courseView').classList.remove('hidden');start();
-}catch(e){alert('教材を読み込めませんでした。\n'+String(e))}
-}
-function configureCourse(){
-document.title=COURSE.title||'学習問題アプリ';
-$('courseTitle').textContent=COURSE.title||'学習問題アプリ';$('courseSubtitle').textContent=COURSE.subtitle||'';
-KEY=storageKey();migrateLegacy();
-mode.innerHTML='<option value="all">全問</option>';
-for(const d of sections()){const o=document.createElement('option');o.value='section:'+d;o.textContent=`${COURSE.section_label} ${d}`;mode.append(o)}
-mode.insertAdjacentHTML('beforeend','<option value="wrong">間違えた問題だけ</option><option value="uncleared">未クリア問題だけ</option>');
-$('notice').textContent=`現在${QUESTIONS.length}問収録です。各問題は${COURSE.clear_count}回正解するとクリアになります。`;
-$('dashHelp').textContent=`${COURSE.clear_count}回正解でクリア。履歴はこの端末のブラウザ内に教材別で保存されます。`;
-}
-function start(){
-const v=mode.value;
-if(v==='all')active=[...QUESTIONS];
-else if(v==='wrong')active=QUESTIONS.filter(q=>stat(q.number).wrong>0);
-else if(v==='uncleared')active=QUESTIONS.filter(q=>!cleared(q));
-else if(v.startsWith('section:'))active=QUESTIONS.filter(q=>String(q.day)===v.slice(8));
-else active=[];
-if(shuffle.checked)active=mix(active);
-current=correct=answered=0;locked=false;
-$('dash').style.display='none';$('quizCard').style.display='block';$('actions').style.display='grid';$('feedback').style.display='none';
-if(!active.length){
-$('qhead').textContent='対象問題はありません';
-$('question').textContent=v==='wrong'?'まだ間違えた問題はありません。':'対象となる問題はありません。';
-options.innerHTML='';$('answerBtn').disabled=true;$('nextBtn').disabled=true;return;
-}
-render();
-}
-function render(){
-const q=active[current],s=stat(q.number);locked=false;$('feedback').style.display='none';$('feedback').classList.remove('feedback-good','feedback-bad');
-$('qhead').textContent=`${COURSE.section_label} ${q.day}　問${q.number}【${q.type}】`;
-$('question').textContent=q.question+`\n\n［累計］正解 ${s.correct}回 / 不正解 ${s.wrong}回`+(cleared(q)?'　✓クリア':'');
-options.innerHTML='';
-q.options.forEach(([k,t])=>{
-const b=document.createElement('button');b.type='button';b.className='option';b.dataset.choice=String(k);b.setAttribute('aria-label',`${k}. ${t}`);
-const key=document.createElement('span');key.className='option-key';key.textContent=k;
-const sp=document.createElement('span');sp.className='option-text';sp.textContent=t;
-b.append(key,sp);b.onclick=()=>answer(k,b);options.append(b);
-});
-options.classList.toggle('two-col',q.options.every(([,t])=>String(t).length<75));
-$('answerBtn').disabled=true;$('nextBtn').disabled=true;
-$('progressText').textContent=`問題 ${current+1} / ${active.length}　問${q.number}`;
-$('bar').style.width=`${current/active.length*100}%`;score();
-}
-function answer(selectedValue,selectedButton){
-if(locked)return;
-const q=active[current];
-if(selectedValue===undefined||selectedValue===null)return;
-answered++;locked=true;
-const ok=String(selectedValue)===String(q.answer);if(ok)correct++;saveAns(q.number,ok);
-const buttons=[...options.querySelectorAll('.option')];buttons.forEach(b=>{b.disabled=true;const choice=String(b.dataset.choice);if(choice===String(q.answer))b.classList.add(ok&&b===selectedButton?'correct':'reveal-correct')});
-if(selectedButton){selectedButton.classList.remove('reveal-correct');selectedButton.classList.add(ok?'correct':'incorrect')}
-$('result').textContent=ok?'正解です。':`不正解です。正解は ${q.answer} です。`;
-$('result').className='result '+(ok?'good':'bad');
-const s=stat(q.number),remain=Math.max(0,COURSE.clear_count-s.correct);
-$('explanation').textContent='解説：\n'+q.explanation+`\n\n累計：正解 ${s.correct}回 / 不正解 ${s.wrong}回`+(cleared(q)?'\n✓ この問題はクリア済みです。':`\nあと ${remain}回正解でクリアです。`);
-$('feedback').classList.add(ok?'feedback-good':'feedback-bad');$('feedback').style.display='block';
-$('answerBtn').disabled=true;$('nextBtn').disabled=false;
-$('bar').style.width=`${(current+1)/active.length*100}%`;score();
-requestAnimationFrame(()=>$('feedback').scrollIntoView({behavior:'smooth',block:'nearest'}));
-}
-function next(){
-if(!locked)return;
-if(current+1>=active.length){
-alert(`終了しました。\n\n正解数: ${correct} / ${active.length}\n正答率: ${(correct/active.length*100).toFixed(1)}%`);
-showDash();return;
-}
-current++;render();
-}
-function score(){
-const r=answered?correct/answered*100:0;
-$('scoreText').textContent=`現在の成績：${correct} / ${answered} 正解（${r.toFixed(1)}%）`;
-}
-function showDash(){
-$('dash').style.display='block';$('quizCard').style.display='none';$('feedback').style.display='none';$('actions').style.display='none';
-const g=$('dashGrid');g.innerHTML='';
-for(const d of sections()){
-const qs=QUESTIONS.filter(q=>String(q.day)===String(d));
-const c=qs.filter(cleared).length;
-const a=qs.filter(q=>{const s=stat(q.number);return s.correct+s.wrong>0}).length;
-const b=document.createElement('div');b.className='daybox';
-const title=document.createElement('strong');title.textContent=`${COURSE.section_label} ${d}`;
-const clearedDiv=document.createElement('div');clearedDiv.className=c===qs.length&&qs.length?'mastered':'';clearedDiv.textContent=`${c} / ${qs.length} クリア`;
-const learnedDiv=document.createElement('div');learnedDiv.className='small';learnedDiv.textContent=`学習済み ${a}問`;
-b.append(title,clearedDiv,learnedDiv);g.append(b);
-}
-}
-$('restart').onclick=start;
-$('answerBtn').onclick=()=>{};
-$('nextBtn').onclick=next;
-$('dashBtn').onclick=showDash;
-$('resetBtn').onclick=()=>{if(confirm('この教材の学習履歴をすべて削除しますか？')){localStorage.removeItem(KEY);alert('学習履歴を削除しました。');start()}};
-$('backToCatalog').onclick=()=>{$('courseView').classList.add('hidden');$('catalogView').classList.remove('hidden');document.title='学習問題アプリ';renderCatalog()};
-$('addCoursesBtn').onclick=openAdd;$('courseBuilderBtn').onclick=()=>{location.href='./course-builder.html'};
-$('backupPrivateBtn').onclick=backupPrivateCourses;
-$('restorePrivateBtn').onclick=()=>$('restorePrivateFile').click();
-$('restorePrivateFile').addEventListener('change',async e=>{const f=e.target.files&&e.target.files[0];if(f)await restorePrivateCourses(f);e.target.value=''});
-$('confirmDeleteBtn').onclick=confirmDelete;
-$('cancelDeleteBtn').onclick=closeDelete;
-$('closeAddBtn').onclick=()=>$('addModal').classList.add('hidden');
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;$('installBox').style.display='block'});
-$('installBtn').onclick=async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;$('installBox').style.display='none'};
-if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js'));
-loadCatalog();
+function confirmDelete(){if(!pendingDelete)return;const choice=document.querySelector('input[name=deleteMode]:checked')?.value||'keep';unsubscribeCourse(pendingDelete.id);if(choice==='remove')localStorage.removeItem(progressKey(pendingDelete.id));const title=pendingDelete.title||pendingDelete.id;closeDelete();renderCatalog();alert(choice==='remove'?`「${title}」をマイ教材から外し、学習成績も削除しました。`:`「${title}」をマイ教材から外しました。学習成績は残っています。`)}
+function renderAddList(){const list=$('addList');list.innerHTML='';const search=String($('courseSearch')?.value||'').trim().toLowerCase();const category=String($('categoryFilter')?.value||'');let available=CATALOG.courses.filter(c=>!isSubscribed(c.id));available=available.filter(c=>{const text=[c.title,c.description,c.category,c.difficulty,c.audience,c.author,c.version,c.updated_at,c.study_time,c.id].concat(Array.isArray(c.tags)?c.tags:[]).filter(Boolean).join(' ').toLowerCase();return(!search||text.includes(search))&&(!category||String(c.category||'')===category)});$('addCount').textContent=`該当 ${available.length}件`;if(!available.length){const p=document.createElement('p');p.textContent='条件に一致する教材はありません。';list.append(p);return}for(const c of available){const card=document.createElement('div');card.className='coursecard';card.style.marginBottom='10px';const h=document.createElement('h2');h.textContent=c.title||c.id;const d=document.createElement('p');d.textContent=c.description||'';const parts=[];parts.push(c.local?'個人教材':'共有教材');if(c.category)parts.push('カテゴリ: '+c.category);if(c.difficulty)parts.push('難易度: '+c.difficulty);if(c.audience)parts.push('対象: '+c.audience);if(c.author)parts.push('作成者: '+c.author);if(c.version)parts.push('版: '+c.version);if(c.updated_at)parts.push('更新: '+c.updated_at);if(c.study_time)parts.push('目安: '+c.study_time);if(Array.isArray(c.tags)&&c.tags.length)parts.push('タグ: '+c.tags.join(', '));parts.push(`この端末で学習済み ${progressFor(c.id)}問`);const meta=document.createElement('div');meta.className='coursemeta';meta.textContent=parts.join(' / ');const b=document.createElement('button');b.className='secondary';b.textContent='マイ教材に追加';b.onclick=async()=>{b.disabled=true;b.textContent='追加中…';try{const courseUrl=new URL(c.file,location.href).href;const r=await fetch(courseUrl,{cache:'no-store'});if(!r.ok)throw new Error(`教材ファイル取得失敗 HTTP ${r.status} (${c.file})`);let data;try{data=await r.json()}catch{throw new Error(`教材JSONの解析に失敗しました (${c.file})`)}validateCourse(data,c.id);subscribeCourse(c.id);renderAddList();renderCatalog()}catch(e){alert('教材を追加できませんでした。\n'+String(e));b.disabled=false;b.textContent='マイ教材に追加'}};card.append(h,d,meta,b);list.append(card)}}
+function openAdd(){const select=$('categoryFilter');select.innerHTML='<option value="">すべてのカテゴリ</option>';const categories=[...new Set(CATALOG.courses.filter(c=>!isSubscribed(c.id)&&c.category).map(c=>String(c.category)))].sort((a,b)=>a.localeCompare(b,'ja'));for(const cat of categories){const o=document.createElement('option');o.value=cat;o.textContent=cat;select.append(o)}$('courseSearch').value='';select.value='';renderAddList();$('addModal').classList.remove('hidden')}
+$('courseSearch').addEventListener('input',renderAddList);$('categoryFilter').addEventListener('change',renderAddList);
+function validateCourse(data,expectedId){if(!data||!Array.isArray(data.questions)||!data.questions.length)throw new Error('questions が空です');if(!data.course_id)throw new Error('course_id がありません');if(expectedId&&data.course_id!==expectedId)throw new Error('catalog の id と教材の course_id が一致しません');const nums=new Set();for(const q of data.questions){if(q.number===undefined||nums.has(String(q.number)))throw new Error('問題番号が未設定または重複しています');nums.add(String(q.number));if(!Array.isArray(q.options)||!q.options.length||!q.answer)throw new Error(`問${q.number}の選択肢または正解が不正です`)}}
+async function loadCourse(item,resumeQuestionNumber=null){try{const courseUrl=new URL(item.file,location.href).href;const r=await fetch(courseUrl,{cache:'no-store'});if(!r.ok)throw new Error(`教材ファイル取得失敗 HTTP ${r.status} (${item.file})`);let data;try{data=await r.json()}catch{throw new Error(`教材JSONの解析に失敗しました (${item.file})`)}validateCourse(data,item.id);const cc=Number(data.clear_count);COURSE={course_id:data.course_id,title:data.title||item.title||'学習問題アプリ',subtitle:data.subtitle||'',section_label:data.section_label||'区分',clear_count:Number.isInteger(cc)&&cc>0?cc:3,questions:data.questions};QUESTIONS=COURSE.questions;configureCourse();$('catalogView').classList.add('hidden');$('courseView').classList.remove('hidden');start();if(resumeQuestionNumber!==null&&active.length){const idx=active.findIndex(q=>String(q.number)===String(resumeQuestionNumber));if(idx>=0){current=idx;render()}}}catch(e){alert('教材を読み込めませんでした。\n'+String(e))}}
+function configureCourse(){document.title=COURSE.title||'スタディカード';$('courseTitle').textContent=COURSE.title||'学習問題アプリ';$('courseSubtitle').textContent=COURSE.subtitle||'';KEY=storageKey();migrateLegacy();mode.innerHTML='<option value="all">全問</option>';for(const d of sections()){const o=document.createElement('option');o.value='section:'+d;o.textContent=`${COURSE.section_label} ${d}`;mode.append(o)}mode.insertAdjacentHTML('beforeend','<option value="wrong">間違えた問題だけ</option><option value="uncleared">未クリア問題だけ</option>');$('notice').textContent=`現在${QUESTIONS.length}問収録です。各問題は${COURSE.clear_count}回正解するとクリアになります。`;$('dashHelp').textContent=`${COURSE.clear_count}回正解でクリア。履歴はこの端末のブラウザ内に教材別で保存されます。`}
+function start(){const v=mode.value;if(v==='all')active=[...QUESTIONS];else if(v==='wrong')active=QUESTIONS.filter(q=>stat(q.number).wrong>0);else if(v==='uncleared')active=QUESTIONS.filter(q=>!cleared(q));else if(v.startsWith('section:'))active=QUESTIONS.filter(q=>String(q.day)===v.slice(8));else active=[];if(shuffle.checked)active=mix(active);current=correct=answered=0;locked=false;$('dash').style.display='none';$('quizCard').style.display='block';$('actions').style.display='grid';$('feedback').style.display='none';if(!active.length){$('qhead').textContent='対象問題はありません';$('question').textContent=v==='wrong'?'まだ間違えた問題はありません。':'対象となる問題はありません。';options.innerHTML='';$('answerBtn').disabled=true;$('nextBtn').disabled=true;return}render()}
+function render(){const q=active[current],s=stat(q.number);locked=false;$('feedback').style.display='none';$('feedback').classList.remove('feedback-good','feedback-bad');$('qhead').textContent=`${COURSE.section_label} ${q.day}　問${q.number}【${q.type}】`;$('question').textContent=q.question+`\n\n［累計］正解 ${s.correct}回 / 不正解 ${s.wrong}回`+(cleared(q)?'　✓クリア':'');options.innerHTML='';q.options.forEach(([k,t])=>{const b=document.createElement('button');b.type='button';b.className='option';b.dataset.choice=String(k);b.setAttribute('aria-label',`${k}. ${t}`);const key=document.createElement('span');key.className='option-key';key.textContent=k;const sp=document.createElement('span');sp.className='option-text';sp.textContent=t;b.append(key,sp);b.onclick=()=>answer(k,b);options.append(b)});options.classList.toggle('two-col',q.options.every(([,t])=>String(t).length<75));$('answerBtn').disabled=true;$('nextBtn').disabled=true;$('progressText').textContent=`問題 ${current+1} / ${active.length}　問${q.number}`;$('bar').style.width=`${current/active.length*100}%`;score();saveLastStudy(q)}
+function answer(selectedValue,selectedButton){if(locked)return;const q=active[current];if(selectedValue===undefined||selectedValue===null)return;answered++;locked=true;const ok=String(selectedValue)===String(q.answer);if(ok)correct++;saveAns(q.number,ok);const buttons=[...options.querySelectorAll('.option')];buttons.forEach(b=>{b.disabled=true;const choice=String(b.dataset.choice);if(choice===String(q.answer))b.classList.add(ok&&b===selectedButton?'correct':'reveal-correct')});if(selectedButton){selectedButton.classList.remove('reveal-correct');selectedButton.classList.add(ok?'correct':'incorrect')}$('result').textContent=ok?'正解です。':`不正解です。正解は ${q.answer} です。`;$('result').className='result '+(ok?'good':'bad');const s=stat(q.number),remain=Math.max(0,COURSE.clear_count-s.correct);$('explanation').textContent='解説：\n'+q.explanation+`\n\n累計：正解 ${s.correct}回 / 不正解 ${s.wrong}回`+(cleared(q)?'\n✓ この問題はクリア済みです。':`\nあと ${remain}回正解でクリアです。`);$('feedback').classList.add(ok?'feedback-good':'feedback-bad');$('feedback').style.display='block';$('answerBtn').disabled=true;$('nextBtn').disabled=false;$('bar').style.width=`${(current+1)/active.length*100}%`;score();saveLastStudy(q);requestAnimationFrame(()=>$('feedback').scrollIntoView({behavior:'smooth',block:'nearest'}))}
+function next(){if(!locked)return;if(current+1>=active.length){alert(`終了しました。\n\n正解数: ${correct} / ${active.length}\n正答率: ${(correct/active.length*100).toFixed(1)}%`);showDash();return}current++;render()}
+function score(){const r=answered?correct/answered*100:0;$('scoreText').textContent=`現在の成績：${correct} / ${answered} 正解（${r.toFixed(1)}%）`}
+function showDash(){$('dash').style.display='block';$('quizCard').style.display='none';$('feedback').style.display='none';$('actions').style.display='none';const g=$('dashGrid');g.innerHTML='';for(const d of sections()){const qs=QUESTIONS.filter(q=>String(q.day)===String(d));const c=qs.filter(cleared).length;const a=qs.filter(q=>{const s=stat(q.number);return s.correct+s.wrong>0}).length;const b=document.createElement('div');b.className='daybox';const title=document.createElement('strong');title.textContent=`${COURSE.section_label} ${d}`;const clearedDiv=document.createElement('div');clearedDiv.className=c===qs.length&&qs.length?'mastered':'';clearedDiv.textContent=`${c} / ${qs.length} クリア`;const learnedDiv=document.createElement('div');learnedDiv.className='small';learnedDiv.textContent=`学習済み ${a}問`;b.append(title,clearedDiv,learnedDiv);g.append(b)}}
+$('restart').onclick=start;$('answerBtn').onclick=()=>{};$('nextBtn').onclick=next;$('dashBtn').onclick=showDash;$('resetBtn').onclick=()=>{if(confirm('この教材の学習履歴をすべて削除しますか？')){localStorage.removeItem(KEY);alert('学習履歴を削除しました。');start()}};
+$('backToCatalog').onclick=()=>{$('courseView').classList.add('hidden');$('catalogView').classList.remove('hidden');document.title='スタディカード';renderCatalog()};
+$('addCoursesBtn').onclick=openAdd;$('openAddBtn').onclick=openAdd;$('courseBuilderBtn').onclick=()=>{location.href='./course-builder.html'};$('bottomBuilderBtn').onclick=()=>{location.href='./course-builder.html'};
+$('backupPrivateBtn').onclick=backupPrivateCourses;$('restorePrivateBtn').onclick=()=>$('restorePrivateFile').click();$('restorePrivateFile').addEventListener('change',async e=>{const f=e.target.files&&e.target.files[0];if(f)await restorePrivateCourses(f);e.target.value=''});$('confirmDeleteBtn').onclick=confirmDelete;$('cancelDeleteBtn').onclick=closeDelete;$('closeAddBtn').onclick=()=>$('addModal').classList.add('hidden');
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;$('installBox').style.display='block'});$('installBtn').onclick=async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;$('installBox').style.display='none'};if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js'));loadCatalog();
 </script>
 </body>
 </html>
