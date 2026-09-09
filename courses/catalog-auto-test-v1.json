@@ -1,0 +1,37 @@
+{
+  "course_id": "catalog-auto-test-v1",
+  "title": "カタログ自動登録テスト教材",
+  "description": "v1.5の教材JSON追加からcatalog.json自動登録までを確認するためのテスト教材",
+  "subtitle": "v1.5 自動登録確認用",
+  "section_label": "章",
+  "clear_count": 3,
+  "questions": [
+    {
+      "day": 1,
+      "number": 1,
+      "type": "四者択一",
+      "question": "v1.5で新しい教材JSONをcoursesフォルダへ追加したとき、catalog.jsonはどうなるか。",
+      "options": [["A", "GitHub Actionsが検証後に自動更新する"], ["B", "各利用者が手作業で編集する"], ["C", "更新されない"], ["D", "教材JSONが自動削除される"]],
+      "answer": "A",
+      "explanation": "v1.5ではGitHub Actionsが教材JSONを検証し、正常ならcatalog.jsonを自動生成・更新します。"
+    },
+    {
+      "day": 1,
+      "number": 2,
+      "type": "正誤判定",
+      "question": "新しく配信カタログへ登録された教材は、各利用者のマイ教材へ自動的に追加される。",
+      "options": [["A", "正しい"], ["B", "誤り"]],
+      "answer": "B",
+      "explanation": "新教材は『教材を追加』に候補として表示され、本人が選択してマイ教材へ追加します。"
+    },
+    {
+      "day": 1,
+      "number": 3,
+      "type": "正誤判定",
+      "question": "教材JSONの内容に不備がある場合、v1.5の自動検証はエラーとして扱う。",
+      "options": [["A", "正しい"], ["B", "誤り"]],
+      "answer": "A",
+      "explanation": "JSON破損、ID重複、問題番号重複、正解不整合などは検証エラーとなります。"
+    }
+  ]
+}
