@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" href="app-icon-card-check-192-v2.png">
 <title>学習問題アプリ</title>
 <style>
-:root{--bg:#f5f7fb;--card:#fff;--text:#1e2430;--muted:#667085;--border:#d8dee9;--accent:#2f6fed;--good:#147a3d;--bad:#b42318;--soft:#eef3ff}
+:root{--bg:#f5f7fb;--card:#fff;--text:#1e2430;--muted:#667085;--border:#d8dee9;--accent:#2f6fed;--good:#147a3d;--bad:#b42318;--soft:#eef3ff;--good-soft:#ecfdf3;--bad-soft:#fff1f0}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP","Yu Gothic UI",sans-serif}
 .app{max-width:960px;margin:auto;padding:16px}.header,.card,.status{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:14px}
 h1{margin:0 0 8px;font-size:clamp(24px,3vw,34px)}.sub,.small{color:var(--muted)}.controls{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
@@ -16,16 +16,20 @@ h1{margin:0 0 8px;font-size:clamp(24px,3vw,34px)}.sub,.small{color:var(--muted)}
 .primary{background:var(--accent);color:#fff;border-color:var(--accent)}.secondary{background:var(--soft);color:#1849a9}.danger{color:var(--bad)}
 .toggle{display:flex;align-items:center;gap:10px;min-height:52px;padding:0 14px;background:#fff;border:1px solid var(--border);border-radius:14px;font-weight:700}.toggle input{width:24px;height:24px}
 .notice{background:#fff8e6;border:1px solid #f4d38a;border-radius:14px;padding:12px 14px;margin-bottom:14px}.statusrow{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-weight:800}
-.progress{height:14px;background:#e8ecf3;border-radius:999px;overflow:hidden;margin-top:12px}.progress>div{height:100%;background:var(--accent);width:0}
+.progress{height:14px;background:#e8ecf3;border-radius:999px;overflow:hidden;margin-top:12px}.progress>div{height:100%;background:var(--accent);width:0;transition:width .25s ease}
 .qhead{color:var(--accent);font-weight:800;font-size:18px;margin-bottom:12px}.question{white-space:pre-wrap;font-size:clamp(19px,2.4vw,24px);line-height:1.65}
-.options{display:grid;grid-template-columns:1fr;gap:12px;margin-top:18px}.option{display:flex;gap:12px;border:2px solid var(--border);border-radius:16px;padding:16px;font-size:19px;line-height:1.45}.option input{width:26px;height:26px;flex:0 0 auto}.option.selected{border-color:var(--accent);background:var(--soft)}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}.result{font-size:22px;font-weight:900;margin-bottom:10px}.good{color:var(--good)}.bad{color:var(--bad)}.explanation{white-space:pre-wrap;font-size:18px;line-height:1.7}
+.options{display:grid;grid-template-columns:1fr;gap:12px;margin-top:18px}.option{appearance:none;width:100%;display:flex;align-items:center;gap:12px;text-align:left;border:2px solid var(--border);border-radius:18px;padding:14px 16px;min-height:64px;background:#fff;color:var(--text);font-size:18px;line-height:1.45;font-weight:700;cursor:pointer;transition:border-color .16s ease,background .16s ease,transform .08s ease,box-shadow .16s ease}.option:hover{border-color:#b8c6e8;background:#fbfcff}.option:active{transform:scale(.995)}.option:focus-visible{outline:3px solid rgba(47,111,237,.22);outline-offset:2px}.option:disabled{cursor:default;opacity:1}.option-key{width:36px;height:36px;flex:0 0 36px;border-radius:12px;background:#f2f4f7;color:#344054;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900}.option-text{min-width:0}.option.correct{border-color:#21a45b;background:var(--good-soft);box-shadow:0 0 0 1px rgba(33,164,91,.08)}.option.correct .option-key{background:#21a45b;color:#fff}.option.incorrect{border-color:#d92d20;background:var(--bad-soft);box-shadow:0 0 0 1px rgba(217,45,32,.08)}.option.incorrect .option-key{background:#d92d20;color:#fff}.option.reveal-correct{border-color:#65c88b;background:#f4fff8}.option.reveal-correct .option-key{background:#dff6e8;color:#147a3d}
+.actions{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:14px}.actions #answerBtn{display:none}.actions #nextBtn{min-height:56px;font-size:18px}.actions #nextBtn:not(:disabled){background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 8px 24px rgba(47,111,237,.22)}
+.result{font-size:22px;font-weight:900;margin-bottom:10px}.good{color:var(--good)}.bad{color:var(--bad)}.explanation{white-space:pre-wrap;font-size:18px;line-height:1.7}
+#feedback{border-width:2px;transition:border-color .2s ease,background .2s ease}#feedback.feedback-good{border-color:#65c88b;background:var(--good-soft)}#feedback.feedback-bad{border-color:#f19992;background:var(--bad-soft)}
+#quizCard{border-radius:24px;box-shadow:0 8px 28px rgba(16,24,40,.06)}#quizCard .qhead{display:inline-block;background:#eef3ff;border-radius:999px;padding:6px 10px;font-size:14px;margin-bottom:14px}#courseView>.status{border:0;background:transparent;padding:4px 4px 12px;margin-bottom:0}.statusrow{font-size:14px}.status .progress{height:9px;margin-top:9px}
 .dashboard{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.daybox{background:#fafbfc;border:1px solid var(--border);border-radius:14px;padding:12px;text-align:center}.mastered{color:var(--good);font-weight:800}
 .install{display:none;background:#eef3ff;border:1px solid #b9cdfc;border-radius:14px;padding:12px 14px;margin-bottom:14px}
 .coursegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px}.coursecard{border:1px solid var(--border);border-radius:16px;padding:16px;background:#fff}.coursecard h2{margin:0 0 8px;font-size:21px}.coursecard p{min-height:48px;color:var(--muted)}.coursemeta{font-size:14px;color:var(--muted);margin-bottom:10px}
 .cardactions{display:grid;grid-template-columns:1fr auto;gap:8px}.managebar{display:flex;justify-content:flex-end;margin-top:14px}.managebar button{width:auto;min-width:180px}.hidden{display:none!important}
 .modalback{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;padding:18px;z-index:20}.modal{max-width:520px;width:100%;background:#fff;border-radius:18px;border:1px solid var(--border);padding:20px}.modal h2{margin-top:0}.modalchoices{display:grid;gap:10px;margin:16px 0}.modalchoice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);border-radius:12px;padding:12px}.modalchoice input{width:22px;height:22px;margin-top:2px}.modalactions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(min-width:700px){.two-col{grid-template-columns:1fr 1fr}}@media(max-width:700px){.controls,.actions,.coursegrid,.modalactions{grid-template-columns:1fr}.wide{grid-column:auto}.dashboard{grid-template-columns:repeat(2,1fr)}.app{padding:12px}.cardactions{grid-template-columns:1fr}.managebar button{width:100%}}
+@media(min-width:700px){.two-col{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.controls,.coursegrid,.modalactions{grid-template-columns:1fr}.wide{grid-column:auto}.dashboard{grid-template-columns:repeat(2,1fr)}.app{padding:12px}.cardactions{grid-template-columns:1fr}.managebar button{width:100%}#courseView>.header{padding:14px;margin-bottom:10px}#courseView>.notice{font-size:14px}.question{font-size:19px;line-height:1.62}.option{min-height:60px;padding:12px 14px;font-size:17px}.options{gap:10px}.actions{position:sticky;bottom:calc(env(safe-area-inset-bottom) + 8px);z-index:8;padding:8px;background:rgba(245,247,251,.94);backdrop-filter:blur(8px);border-radius:18px}#feedback{scroll-margin-bottom:88px}}
 </style>
 </head>
 <body>
@@ -54,7 +58,7 @@ h1{margin:0 0 8px;font-size:clamp(24px,3vw,34px)}.sub,.small{color:var(--muted)}
 <section class="status"><div class="statusrow"><div id="progressText">-</div><div id="scoreText">現在の成績：0 / 0</div></div><div class="progress"><div id="bar"></div></div></section>
 <section class="card" id="quizCard"><div class="qhead" id="qhead"></div><div class="question" id="question"></div><div class="options" id="options"></div></section>
 <section class="card" id="feedback" style="display:none"><div class="result" id="result"></div><div class="explanation" id="explanation"></div></section>
-<div class="actions" id="actions"><button class="primary" id="answerBtn">回答する</button><button id="nextBtn" disabled>次の問題</button></div>
+<div class="actions" id="actions"><button class="primary" id="answerBtn" aria-hidden="true" tabindex="-1">回答する</button><button id="nextBtn" disabled>次の問題</button></div>
 <section class="card" id="dash" style="display:none"><div class="qhead">学習状況</div><div class="small" id="dashHelp" style="margin-bottom:12px"></div><div class="dashboard" id="dashGrid"></div></section>
 </div>
 </div>
@@ -268,36 +272,37 @@ options.innerHTML='';$('answerBtn').disabled=true;$('nextBtn').disabled=true;ret
 render();
 }
 function render(){
-const q=active[current],s=stat(q.number);locked=false;$('feedback').style.display='none';
+const q=active[current],s=stat(q.number);locked=false;$('feedback').style.display='none';$('feedback').classList.remove('feedback-good','feedback-bad');
 $('qhead').textContent=`${COURSE.section_label} ${q.day}　問${q.number}【${q.type}】`;
 $('question').textContent=q.question+`\n\n［累計］正解 ${s.correct}回 / 不正解 ${s.wrong}回`+(cleared(q)?'　✓クリア':'');
 options.innerHTML='';
 q.options.forEach(([k,t])=>{
-const l=document.createElement('label');l.className='option';
-const r=document.createElement('input');r.type='radio';r.name='answer';r.value=k;
-r.onchange=()=>{document.querySelectorAll('.option').forEach(x=>x.classList.remove('selected'));l.classList.add('selected')};
-const sp=document.createElement('span');sp.textContent=`${k}. ${t}`;l.append(r,sp);options.append(l);
+const b=document.createElement('button');b.type='button';b.className='option';b.dataset.choice=String(k);b.setAttribute('aria-label',`${k}. ${t}`);
+const key=document.createElement('span');key.className='option-key';key.textContent=k;
+const sp=document.createElement('span');sp.className='option-text';sp.textContent=t;
+b.append(key,sp);b.onclick=()=>answer(k,b);options.append(b);
 });
 options.classList.toggle('two-col',q.options.every(([,t])=>String(t).length<75));
-$('answerBtn').disabled=false;$('nextBtn').disabled=true;
-$('progressText').textContent=`${current+1} / ${active.length} 問　問${q.number}`;
+$('answerBtn').disabled=true;$('nextBtn').disabled=true;
+$('progressText').textContent=`問題 ${current+1} / ${active.length}　問${q.number}`;
 $('bar').style.width=`${current/active.length*100}%`;score();
 }
-function answer(){
+function answer(selectedValue,selectedButton){
 if(locked)return;
-const sel=document.querySelector('input[name=answer]:checked');
-if(!sel)return alert('選択肢を1つ選んでください。');
-const q=active[current];answered++;locked=true;
-const ok=sel.value===q.answer;if(ok)correct++;saveAns(q.number,ok);
+const q=active[current];
+if(selectedValue===undefined||selectedValue===null)return;
+answered++;locked=true;
+const ok=String(selectedValue)===String(q.answer);if(ok)correct++;saveAns(q.number,ok);
+const buttons=[...options.querySelectorAll('.option')];buttons.forEach(b=>{b.disabled=true;const choice=String(b.dataset.choice);if(choice===String(q.answer))b.classList.add(ok&&b===selectedButton?'correct':'reveal-correct')});
+if(selectedButton){selectedButton.classList.remove('reveal-correct');selectedButton.classList.add(ok?'correct':'incorrect')}
 $('result').textContent=ok?'正解です。':`不正解です。正解は ${q.answer} です。`;
 $('result').className='result '+(ok?'good':'bad');
 const s=stat(q.number),remain=Math.max(0,COURSE.clear_count-s.correct);
 $('explanation').textContent='解説：\n'+q.explanation+`\n\n累計：正解 ${s.correct}回 / 不正解 ${s.wrong}回`+(cleared(q)?'\n✓ この問題はクリア済みです。':`\nあと ${remain}回正解でクリアです。`);
-$('feedback').style.display='block';
-document.querySelectorAll('input[name=answer]').forEach(x=>x.disabled=true);
+$('feedback').classList.add(ok?'feedback-good':'feedback-bad');$('feedback').style.display='block';
 $('answerBtn').disabled=true;$('nextBtn').disabled=false;
 $('bar').style.width=`${(current+1)/active.length*100}%`;score();
-$('feedback').scrollIntoView({behavior:'smooth',block:'nearest'});
+requestAnimationFrame(()=>$('feedback').scrollIntoView({behavior:'smooth',block:'nearest'}));
 }
 function next(){
 if(!locked)return;
@@ -326,7 +331,7 @@ b.append(title,clearedDiv,learnedDiv);g.append(b);
 }
 }
 $('restart').onclick=start;
-$('answerBtn').onclick=answer;
+$('answerBtn').onclick=()=>{};
 $('nextBtn').onclick=next;
 $('dashBtn').onclick=showDash;
 $('resetBtn').onclick=()=>{if(confirm('この教材の学習履歴をすべて削除しますか？')){localStorage.removeItem(KEY);alert('学習履歴を削除しました。');start()}};
